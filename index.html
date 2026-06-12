@@ -17,17 +17,36 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:var(--text);min-height:100vh}
+
+/* SETUP */
 #setup-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
 .setup-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem;max-width:420px;width:100%;box-shadow:var(--shadow)}
 .setup-logo{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:2rem}
 .setup-title{font-size:22px;font-weight:600;margin-bottom:6px}
 .setup-sub{font-size:13px;color:var(--text-2);margin-bottom:2rem;line-height:1.6}
 .setup-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:6px;display:block}
-.setup-select{width:100%;font-size:14px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:1.5rem;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6860' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
+.setup-select{width:100%;font-size:14px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:1rem;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6860' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
+.setup-input{width:100%;font-size:14px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:1rem;font-family:inherit}
+.setup-input:focus{outline:none;border-color:var(--week)}
+.setup-hint{font-size:12px;color:var(--text-3);margin-bottom:1.25rem;line-height:1.5;padding:8px 12px;background:var(--week-bg);border-radius:var(--radius-sm);color:var(--week)}
+.setup-error{font-size:12px;color:var(--red);margin-bottom:1rem;padding:8px 12px;background:var(--red-bg);border-radius:var(--radius-sm);display:none}
+.setup-error.show{display:block}
 .setup-btn{width:100%;padding:12px;background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer}
 .setup-btn:hover{opacity:.88}
-.instrucoes{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--blue);line-height:1.8;margin-bottom:1.5rem}
-.step-inline{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:700;margin-right:4px}
+
+/* MODAL SENHA */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-card{background:var(--surface);border-radius:16px;padding:2rem;max-width:380px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--text-2);margin-bottom:1.25rem;line-height:1.5}
+.modal-input{width:100%;font-size:14px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:8px;font-family:inherit}
+.modal-input:focus{outline:none;border-color:var(--week)}
+.modal-error{font-size:12px;color:var(--red);margin-bottom:10px;display:none}
+.modal-error.show{display:block}
+.modal-btns{display:flex;gap:8px;margin-top:4px}
+
+/* APP */
 #app{display:none}
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;gap:1rem;height:52px;position:sticky;top:0;z-index:100}
 .header-logo{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);flex-shrink:0}
@@ -36,6 +55,9 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .header-week{font-size:12px;color:var(--text-3);flex:1}
 .header-switch{font-size:12px;color:var(--text-3);cursor:pointer;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:none;flex-shrink:0}
 .header-switch:hover{background:var(--bg)}
+.header-pwd{font-size:12px;color:var(--text-3);cursor:pointer;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:none;flex-shrink:0}
+.header-pwd:hover{background:var(--bg)}
+
 .nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;overflow-x:auto}
 .nav::-webkit-scrollbar{display:none}
 .nav-btn{padding:12px 14px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text-2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;flex-shrink:0;transition:color .15s}
@@ -44,19 +66,23 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .nav-ct{display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;border-radius:99px;margin-left:5px;background:var(--surface-2);color:var(--text-3)}
 .nav-btn.on .nav-ct{background:#FCECEA;color:var(--red)}
 .nav-new{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+
 .kpi-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:1rem 1.5rem}
 @media(max-width:640px){.kpi-bar{grid-template-columns:repeat(3,1fr)}}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
 .kpi-val{font-size:24px;font-weight:600;line-height:1}
 .kpi-lbl{font-size:11px;color:var(--text-3);margin-top:4px}
+
 .main{padding:0 1.5rem 2rem}
 .sec{display:none}.sec.on{display:block}
+
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;box-shadow:var(--shadow)}
 .card-top{display:flex;align-items:flex-start;gap:8px}
 .card-title{font-size:13px;font-weight:500;flex:1;line-height:1.45;cursor:pointer}
 .card-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-top:6px;padding-left:23px}
 .card-body{display:none;margin-top:10px;border-top:1px solid var(--border-light);padding-top:10px}
 .card-body.open{display:block}
+
 .pill{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px;white-space:nowrap}
 .pu{background:var(--red-bg);color:var(--red)}
 .pp{background:var(--amber-bg);color:var(--amber)}
@@ -66,16 +92,19 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .area-tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
 .week-tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--week-bg);color:var(--week);font-weight:500}
 .new-tag{font-size:10px;padding:1px 6px;border-radius:99px;background:var(--red-bg);color:var(--red);font-weight:600}
+
 .lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-top:10px;display:block}
 .fi{width:100%;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;margin-top:4px}
 .fa{width:100%;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;margin-top:4px;resize:vertical;min-height:52px;line-height:1.5}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 @media(max-width:500px){.row3{grid-template-columns:1fr 1fr}}
+
 .combo-wrap{position:relative;margin-top:4px}
 .combo-sel{width:100%;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;cursor:pointer}
 .combo-custom{width:100%;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--amber-border);background:var(--amber-bg);color:var(--text);font-family:inherit;margin-top:4px;display:none}
 .combo-custom.show{display:block}
+
 .btn-primary{font-size:13px;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:var(--text);color:#fff;cursor:pointer;font-weight:500}
 .btn-primary:hover{opacity:.85}
 .btn-primary:disabled{opacity:.35;cursor:not-allowed}
@@ -97,6 +126,7 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .done-t{text-decoration:line-through;color:var(--text-3)}
 .sec-hdr{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);padding:8px 0 5px;margin-top:10px;border-top:1px solid var(--border-light)}
 .sec-hdr:first-of-type{border-top:none;margin-top:0}
+
 .al{border-radius:var(--radius);padding:13px 15px;margin-bottom:9px;border-left:3px solid}
 .al-v{background:var(--red-bg);border-color:var(--red)}
 .al-a{background:var(--amber-bg);border-color:#D4890A}
@@ -112,8 +142,10 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .al-b .al-ac{color:#0C447C;font-size:12px;font-weight:500;margin-top:6px}
 .al-hdr{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:12px 0 6px}
 .al-hdr:first-of-type{margin-top:0}
+
 .fec-item{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--border-light)}
 .fec-item:last-child{border-bottom:none}
+
 .person-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
 .person-hdr{display:flex;align-items:center;gap:10px;padding:12px 15px;cursor:pointer}
 .person-hdr:hover{background:var(--bg)}
@@ -129,6 +161,7 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .msg-text{width:100%;font-size:13px;line-height:1.65;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text);resize:vertical;min-height:120px;font-family:inherit}
 .sent-btn{font-size:12px;padding:5px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-2);cursor:pointer;margin-top:6px;margin-left:6px}
 .sent-btn.done{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+
 .proc-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--shadow)}
 .proc-step{display:flex;gap:12px;margin-bottom:18px}
 .step-num{width:24px;height:24px;border-radius:50%;background:var(--text);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
@@ -142,25 +175,24 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .preview-item.meu{border-left:3px solid var(--week)}
 .preview-item.outro{border-left:3px solid #D4890A}
 .confirm-bar{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap;align-items:center}
-.success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius);padding:1rem 1.25rem;display:none;margin-top:1rem}
-.success-box.show{display:block}
 .export-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--shadow)}
 .json-ta{width:100%;font-size:11px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text-2);font-family:monospace;resize:vertical;min-height:80px;line-height:1.5;margin-top:7px}
 hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
-.badge-info{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;border-radius:99px;background:var(--week-bg);color:var(--week);font-weight:500;margin-top:6px}
+
 .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;font-size:13px;padding:10px 18px;border-radius:var(--radius-sm);box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
 
+<!-- SETUP -->
 <div id="setup-screen">
   <div class="setup-card">
     <div class="setup-logo">Road.ag</div>
     <div class="setup-title">Painel de gestão</div>
-    <div class="setup-sub">Selecione seu nome para carregar sua visão personalizada — demandas, follow-ups e alertas configurados para você.</div>
+    <div class="setup-sub">Selecione seu nome e digite sua senha para acessar.</div>
     <span class="setup-label">Quem está acessando?</span>
-    <select class="setup-select" id="user-select">
+    <select class="setup-select" id="user-select" onchange="onUserChange()">
       <option value="">Selecione...</option>
       <option value="Vinicius">Vinicius — Planejamento</option>
       <option value="André">André — Operações</option>
@@ -169,23 +201,46 @@ hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
       <option value="Amanda">Amanda — Pessoas & Cultura</option>
       <option value="Thay">Thay — Financeiro</option>
     </select>
-    <div class="instrucoes">
-      <strong>Como usar este painel:</strong><br>
-      <span class="step-inline">1</span> Salve este arquivo no seu computador<br>
-      <span class="step-inline">2</span> Sempre abra <strong>este mesmo arquivo</strong> no navegador — o histórico fica salvo aqui<br>
-      <span class="step-inline">3</span> Não abra pelo Claude — abra pelo arquivo salvo<br>
-      <span class="step-inline">⚠</span> Limpar dados do navegador apaga o histórico
+    <div id="pwd-section" style="display:none">
+      <span class="setup-label" id="pwd-label">Senha</span>
+      <div id="first-access-hint" class="setup-hint" style="display:none">
+        🔒 Primeiro acesso — defina sua senha. Você usará ela sempre que entrar.
+      </div>
+      <input class="setup-input" type="password" id="pwd-input" placeholder="Digite sua senha" onkeydown="if(event.key==='Enter')iniciar()">
+      <div id="pwd-confirm-wrap" style="display:none">
+        <span class="setup-label">Confirmar senha</span>
+        <input class="setup-input" type="password" id="pwd-confirm" placeholder="Digite novamente" onkeydown="if(event.key==='Enter')iniciar()">
+      </div>
+      <div class="setup-error" id="setup-error"></div>
     </div>
     <button class="setup-btn" onclick="iniciar()">Entrar no painel</button>
   </div>
 </div>
 
+<!-- MODAL ALTERAR SENHA -->
+<div class="modal-overlay" id="modal-pwd">
+  <div class="modal-card">
+    <div class="modal-title">🔒 Alterar senha</div>
+    <div class="modal-sub">Digite sua senha atual e escolha uma nova.</div>
+    <input class="modal-input" type="password" id="m-pwd-atual" placeholder="Senha atual">
+    <input class="modal-input" type="password" id="m-pwd-nova" placeholder="Nova senha">
+    <input class="modal-input" type="password" id="m-pwd-conf" placeholder="Confirmar nova senha">
+    <div class="modal-error" id="modal-error"></div>
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="salvarNovaSenha()">Salvar</button>
+      <button class="btn-sm" onclick="fecharModalSenha()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
 <div id="app">
   <div class="header">
     <span class="header-logo">Road.ag</span>
     <div class="header-sep"></div>
     <span class="header-user" id="h-user"></span>
     <span class="header-week" id="h-week"></span>
+    <button class="header-pwd" onclick="abrirModalSenha()">🔒 Senha</button>
     <button class="header-switch" onclick="trocarUsuario()">Trocar usuário</button>
   </div>
   <div class="nav" id="nav-bar"></div>
@@ -214,7 +269,6 @@ hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
 function gerarSemanas(){
   const semanas=[];
   const hoje=new Date();
-  // Começa na segunda-feira da semana atual
   const d=new Date(hoje);
   const dia=d.getDay();
   const diff=dia===0?-6:1-dia;
@@ -230,8 +284,6 @@ function gerarSemanas(){
 const SEMANAS=gerarSemanas();
 const AREAS_DEFAULT=["P&C","Liderança","Financeiro","Tech/Ferramentas","Comercial","CEO/Estratégia","Operações","Núcleo A","Núcleo B","Núcleo CBF","CRM","Criação","Performance","Squad 1","Squad 2","Squad 3","Squad 4","Squad 5","A definir"];
 const STATUS_DEFAULT=["urgente","pendente","monitorar","planejado","ok"];
-const SL={urgente:"Urgente",pendente:"Pendente",monitorar:"Monitorar",planejado:"Planejado",ok:"Concluído"};
-const SC={urgente:"pu",pendente:"pp",monitorar:"pm",planejado:"pl",ok:"pk"};
 const CORES={Vinicius:"#1F3864",André:"#2E86AB",Sabrina:"#D64045",Miguel:"#3A7D44",Amanda:"#7C5CBF",Thay:"#E07A5F",Ju:"#9C6B98",Eric:"#6B4226",Erick:"#6B4226",Bruna:"#7A6C5D",Julia:"#5A7A6B",Ian:"#2D6A4F",Lucas:"#1B6CA8",Baldner:"#4A7C59",Jéssica:"#C2566A",Jessica:"#C2566A",Darlan:"#6B4F9E",Carla:"#2E7D6B",Iza:"#B5541F",Gi:"#456B8C",Davila:"#7B3F6E",Leticia:"#3D6B3F"};
 function corP(n){const k=Object.keys(CORES).find(k=>n&&n.toLowerCase().includes(k.toLowerCase()));return k?CORES[k]:"#888";}
 
@@ -241,14 +293,100 @@ let editing=null,openC=new Set(),openPerson=new Set(),msgTab={},sent={};
 let previewItems=[];
 let curTab="briefing";
 let customAreas=[],customStatus=[];
-
-// ── DADOS BASE ──
-const BASE={B:[],D:[],PA:[],AL:[],F:[]};
 let B=[],D=[],PA=[],AL=[],F=[];
+
+// ── SENHA ──
+function pwdKey(user){return `road_pwd_${user}`;}
+function hashSimples(str){
+  let h=0;
+  for(let i=0;i<str.length;i++){h=(Math.imul(31,h)+str.charCodeAt(i))|0;}
+  return h.toString(36);
+}
+function temSenha(user){return !!localStorage.getItem(pwdKey(user));}
+function senhaCorreta(user,pwd){return localStorage.getItem(pwdKey(user))===hashSimples(pwd);}
+function salvarSenha(user,pwd){localStorage.setItem(pwdKey(user),hashSimples(pwd));}
+
+function onUserChange(){
+  const sel=document.getElementById('user-select').value;
+  const sec=document.getElementById('pwd-section');
+  const hint=document.getElementById('first-access-hint');
+  const confirmWrap=document.getElementById('pwd-confirm-wrap');
+  const lbl=document.getElementById('pwd-label');
+  document.getElementById('setup-error').classList.remove('show');
+  document.getElementById('pwd-input').value='';
+  if(document.getElementById('pwd-confirm'))document.getElementById('pwd-confirm').value='';
+  if(!sel){sec.style.display='none';return;}
+  sec.style.display='block';
+  if(!temSenha(sel)){
+    hint.style.display='block';
+    confirmWrap.style.display='block';
+    lbl.textContent='Criar senha';
+  }else{
+    hint.style.display='none';
+    confirmWrap.style.display='none';
+    lbl.textContent='Senha';
+  }
+}
+
+function iniciar(){
+  const sel=document.getElementById('user-select').value;
+  const pwd=document.getElementById('pwd-input').value;
+  const err=document.getElementById('setup-error');
+  err.classList.remove('show');
+  if(!sel){err.textContent='Selecione seu nome.';err.classList.add('show');return;}
+  if(!pwd){err.textContent='Digite sua senha.';err.classList.add('show');return;}
+  if(!temSenha(sel)){
+    const conf=document.getElementById('pwd-confirm').value;
+    if(pwd.length<4){err.textContent='A senha deve ter pelo menos 4 caracteres.';err.classList.add('show');return;}
+    if(pwd!==conf){err.textContent='As senhas não coincidem.';err.classList.add('show');return;}
+    salvarSenha(sel,pwd);
+    showToast('Senha criada!');
+  }else{
+    if(!senhaCorreta(sel,pwd)){err.textContent='Senha incorreta.';err.classList.add('show');return;}
+  }
+  ME=sel;
+  const loaded=carregar();
+  if(!loaded)carregarBase();
+  document.getElementById('setup-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('h-user').textContent=ME;
+  const s=SEMANAS[0];
+  const fim=semanaFim(s);
+  document.getElementById('h-week').textContent=`Semana de ${s} — ${fim}`;
+  buildNav();ra();
+}
+
+function abrirModalSenha(){
+  document.getElementById('m-pwd-atual').value='';
+  document.getElementById('m-pwd-nova').value='';
+  document.getElementById('m-pwd-conf').value='';
+  document.getElementById('modal-error').classList.remove('show');
+  document.getElementById('modal-pwd').classList.add('show');
+}
+function fecharModalSenha(){document.getElementById('modal-pwd').classList.remove('show');}
+function salvarNovaSenha(){
+  const atual=document.getElementById('m-pwd-atual').value;
+  const nova=document.getElementById('m-pwd-nova').value;
+  const conf=document.getElementById('m-pwd-conf').value;
+  const err=document.getElementById('modal-error');
+  err.classList.remove('show');
+  if(!senhaCorreta(ME,atual)){err.textContent='Senha atual incorreta.';err.classList.add('show');return;}
+  if(nova.length<4){err.textContent='A nova senha deve ter pelo menos 4 caracteres.';err.classList.add('show');return;}
+  if(nova!==conf){err.textContent='As senhas não coincidem.';err.classList.add('show');return;}
+  salvarSenha(ME,nova);
+  fecharModalSenha();
+  showToast('Senha alterada!');
+}
+
+function semanaFim(inicioStr){
+  const parts=inicioStr.split('/');
+  const d=new Date(new Date().getFullYear(),parseInt(parts[1])-1,parseInt(parts[0]));
+  d.setDate(d.getDate()+4);
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+}
 
 // ── PERSISTÊNCIA ──
 function storKey(k){return `road_${ME}_${k}`;}
-
 function salvar(){
   if(!ME)return;
   try{
@@ -263,13 +401,12 @@ function salvar(){
     showToast('Salvo');
   }catch(e){console.warn('localStorage indisponível');}
 }
-
 function carregar(){
   try{
     const raw=k=>{const v=localStorage.getItem(storKey(k));return v?JSON.parse(v):null;};
-    const bRaw=raw('B'),dRaw=raw('D'),paRaw=raw('PA'),alRaw=raw('AL'),fRaw=raw('F');
+    const bRaw=raw('B');
     if(bRaw){
-      B=bRaw;D=dRaw||[];PA=paRaw||[];AL=alRaw||[];F=fRaw||[];
+      B=bRaw;D=raw('D')||[];PA=raw('PA')||[];AL=raw('AL')||[];F=raw('F')||[];
       customAreas=raw('customAreas')||[];customStatus=raw('customStatus')||[];
       const n=localStorage.getItem(storKey('nid'));if(n)nid=parseInt(n)+1;
       return true;
@@ -277,110 +414,74 @@ function carregar(){
   }catch(e){}
   return false;
 }
-
-function carregarBase(){
-  B=JSON.parse(JSON.stringify(BASE.B));
-  D=JSON.parse(JSON.stringify(BASE.D));
-  PA=JSON.parse(JSON.stringify(BASE.PA));
-  AL=JSON.parse(JSON.stringify(BASE.AL));
-  F=JSON.parse(JSON.stringify(BASE.F));
-  customAreas=[];customStatus=[];
-}
-
+function carregarBase(){B=[];D=[];PA=[];AL=[];F=[];customAreas=[];customStatus=[];}
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),1800);
 }
-
 function ra(){rB();rPa();rAl();rFc();rFU();rR();rExp();rK();salvar();}
 
 // ── CAMPOS LIVRES ──
 function allAreas(){return [...AREAS_DEFAULT,...customAreas.filter(x=>!AREAS_DEFAULT.includes(x))];}
 function allStatus(){return [...STATUS_DEFAULT,...customStatus.filter(x=>!STATUS_DEFAULT.includes(x))];}
-
-function pillClass(s){
-  const m={urgente:"pu",pendente:"pp",monitorar:"pm",planejado:"pl",ok:"pk"};
-  return m[s]||"pm";
-}
-function statusLabel(s){
-  const m={urgente:"Urgente",pendente:"Pendente",monitorar:"Monitorar",planejado:"Planejado",ok:"Concluído"};
-  return m[s]||(s.charAt(0).toUpperCase()+s.slice(1));
-}
+function pillClass(s){const m={urgente:"pu",pendente:"pp",monitorar:"pm",planejado:"pl",ok:"pk"};return m[s]||"pm";}
+function statusLabel(s){const m={urgente:"Urgente",pendente:"Pendente",monitorar:"Monitorar",planejado:"Planejado",ok:"Concluído"};return m[s]||(s.charAt(0).toUpperCase()+s.slice(1));}
 
 function comboArea(id,val){
-  const areas=allAreas();
-  const isCustom=!areas.includes(val)&&val;
-  return `<div class="combo-wrap">
-    <select class="combo-sel" id="csel-${id}" onchange="comboChange('${id}','area')">
-      ${areas.map(a=>`<option value="${a}"${a===val&&!isCustom?' selected':''}>${a}</option>`).join('')}
-      <option value="__custom__"${isCustom?' selected':''}>+ Nova área...</option>
-    </select>
-    <input class="combo-custom${isCustom?' show':''}" id="cinp-${id}" placeholder="Digite a nova área" value="${isCustom?val:''}" onchange="comboSave('${id}','area',this.value)">
-  </div>`;
+  const areas=allAreas();const isCustom=!areas.includes(val)&&val;
+  return `<div class="combo-wrap"><select class="combo-sel" id="csel-${id}" onchange="comboChange('${id}','area')">${areas.map(a=>`<option value="${a}"${a===val&&!isCustom?' selected':''}>${a}</option>`).join('')}<option value="__custom__"${isCustom?' selected':''}>+ Nova área...</option></select><input class="combo-custom${isCustom?' show':''}" id="cinp-${id}" placeholder="Digite a nova área" value="${isCustom?val:''}" onchange="comboSave('${id}','area',this.value)"></div>`;
 }
-
 function comboStatus(id,val){
-  const stats=allStatus();
-  const isCustom=!stats.includes(val)&&val;
-  return `<div class="combo-wrap">
-    <select class="combo-sel" id="ssel-${id}" onchange="comboChange('${id}','status')">
-      ${stats.map(s=>`<option value="${s}"${s===val&&!isCustom?' selected':''}>${statusLabel(s)}</option>`).join('')}
-      <option value="__custom__"${isCustom?' selected':''}>+ Novo status...</option>
-    </select>
-    <input class="combo-custom${isCustom?' show':''}" id="sinp-${id}" placeholder="Digite o novo status" value="${isCustom?val:''}" onchange="comboSave('${id}','status',this.value)">
-  </div>`;
+  const stats=allStatus();const isCustom=!stats.includes(val)&&val;
+  return `<div class="combo-wrap"><select class="combo-sel" id="ssel-${id}" onchange="comboChange('${id}','status')">${stats.map(s=>`<option value="${s}"${s===val&&!isCustom?' selected':''}>${statusLabel(s)}</option>`).join('')}<option value="__custom__"${isCustom?' selected':''}>+ Novo status...</option></select><input class="combo-custom${isCustom?' show':''}" id="sinp-${id}" placeholder="Digite o novo status" value="${isCustom?val:''}" onchange="comboSave('${id}','status',this.value)"></div>`;
 }
-
 function comboChange(id,type){
   const selId=type==='area'?`csel-${id}`:`ssel-${id}`;
   const inpId=type==='area'?`cinp-${id}`:`sinp-${id}`;
-  const sel=document.getElementById(selId);
-  const inp=document.getElementById(inpId);
+  const sel=document.getElementById(selId);const inp=document.getElementById(inpId);
   if(!sel||!inp)return;
-  if(sel.value==='__custom__'){inp.classList.add('show');inp.focus();}
-  else{inp.classList.remove('show');}
+  if(sel.value==='__custom__'){inp.classList.add('show');inp.focus();}else{inp.classList.remove('show');}
 }
-
 function comboSave(id,type,val){
   if(!val.trim())return;
-  if(type==='area'&&!allAreas().includes(val)){customAreas.push(val);}
-  if(type==='status'&&!allStatus().includes(val)){customStatus.push(val);}
+  if(type==='area'&&!allAreas().includes(val))customAreas.push(val);
+  if(type==='status'&&!allStatus().includes(val))customStatus.push(val);
 }
-
 function getComboVal(id,type){
   const selId=type==='area'?`csel-${id}`:`ssel-${id}`;
   const inpId=type==='area'?`cinp-${id}`:`sinp-${id}`;
-  const sel=document.getElementById(selId);
-  if(!sel)return '';
-  if(sel.value==='__custom__'){
-    const inp=document.getElementById(inpId);
-    return inp?inp.value.trim():'';
-  }
+  const sel=document.getElementById(selId);if(!sel)return '';
+  if(sel.value==='__custom__'){const inp=document.getElementById(inpId);return inp?inp.value.trim():'';}
   return sel.value;
 }
 
-// ── SETUP ──
-function iniciar(){
-  const sel=document.getElementById('user-select').value;
-  if(!sel){alert('Selecione seu nome.');return;}
-  ME=sel;
-  const loaded=carregar();
-  if(!loaded)carregarBase();
-  document.getElementById('setup-screen').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('h-user').textContent=ME;
-  const s=SEMANAS[0];
-  const fim=semanaFim(s);
-  document.getElementById('h-week').textContent=`Semana de ${s} — ${fim}`;
-  buildNav();ra();
+// ── NAV ──
+function buildNav(){
+  const tabs=[{id:'briefing',label:'Briefing'},{id:'pauta',label:'Pauta'},{id:'alertas',label:'Alertas'},{id:'fechamento',label:'Fechamento'},{id:'followup',label:'Follow-up'},{id:'reuniao',label:'+ Reunião'},{id:'exportar',label:'↕ Estado'}];
+  document.getElementById('nav-bar').innerHTML=tabs.map(t=>`<button class="nav-btn${t.id==='briefing'?' on':''}" onclick="goTab('${t.id}')" id="nb-${t.id}">${t.label}<span class="nav-ct" id="ct-${t.id}"></span></button>`).join('');
+}
+function goTab(t){
+  curTab=t;
+  ['briefing','pauta','alertas','fechamento','followup','reuniao','exportar'].forEach(s=>{
+    document.getElementById('s-'+s).className='sec'+(s===t?' on':'');
+    const nb=document.getElementById('nb-'+s);if(nb)nb.className='nav-btn'+(s===t?' on':'');
+  });
 }
 
-function semanaFim(inicioStr){
-  const parts=inicioStr.split('/');
-  const d=new Date(new Date().getFullYear(),parseInt(parts[1])-1,parseInt(parts[0]));
-  d.setDate(d.getDate()+4);
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+// ── HELPERS ──
+function meusBriefings(){return B.filter(x=>isMe(x.owner||ME));}
+function isMe(r){return r&&r.split(/[,\/]/).some(p=>p.trim().toLowerCase().startsWith(ME.toLowerCase()));}
+function grupoPorResp(){
+  const m={};
+  D.filter(x=>!x.done).forEach(x=>{const nome=x.resp.split(/[,\/]/)[0].trim();if(!m[nome])m[nome]={nome,cor:corP(nome),items:[]};m[nome].items.push(x);});
+  return Object.values(m);
+}
+function wppMsg(nome,items){const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='Contínuo'?' ('+x.prazo+')':''}`).join('\n');return `Oi, ${nome}! Passando pra deixar no radar alguns pontos em aberto:\n\n${its}\n\nQualquer coisa me chama. Obrigado!`;}
+function emailMsg(nome,items){const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='Contínuo'?' — prazo: '+x.prazo:''}`).join('\n');return `Oi, ${nome},\n\nPassando para um alinhamento rápido sobre pontos em aberto:\n\n${its}\n\nSe precisar de apoio ou tiver bloqueio, me avisa.\n\nObrigado!\n${ME}`;}
+function cpText(elId,btnId){
+  const el=document.getElementById(elId);const text=el.tagName==='TEXTAREA'?el.value:el.textContent;
+  navigator.clipboard.writeText(text).then(()=>{const btn=document.getElementById(btnId);if(!btn)return;const orig=btn.innerHTML;btn.innerHTML='<span style="font-size:13px;line-height:1">✓</span> Copiado!';btn.classList.add('ok');setTimeout(()=>{btn.innerHTML=orig;btn.classList.remove('ok');},2000);});
 }
 
 function trocarUsuario(){
@@ -388,65 +489,9 @@ function trocarUsuario(){
   document.getElementById('setup-screen').style.display='flex';
   document.getElementById('app').style.display='none';
   document.getElementById('user-select').value='';
-}
-
-function isMe(r){return r&&r.split(/[,\/]/).some(p=>p.trim().toLowerCase().startsWith(ME.toLowerCase()));}
-
-// ── NAV ──
-function buildNav(){
-  const tabs=[
-    {id:'briefing',label:'Briefing'},
-    {id:'pauta',label:'Pauta'},
-    {id:'alertas',label:'Alertas'},
-    {id:'fechamento',label:'Fechamento'},
-    {id:'followup',label:'Follow-up'},
-    {id:'reuniao',label:'+ Reunião'},
-    {id:'exportar',label:'↕ Estado'},
-  ];
-  document.getElementById('nav-bar').innerHTML=tabs.map(t=>
-    `<button class="nav-btn${t.id==='briefing'?' on':''}" onclick="goTab('${t.id}')" id="nb-${t.id}">${t.label}<span class="nav-ct" id="ct-${t.id}"></span></button>`
-  ).join('');
-}
-
-function goTab(t){
-  curTab=t;
-  ['briefing','pauta','alertas','fechamento','followup','reuniao','exportar'].forEach(s=>{
-    document.getElementById('s-'+s).className='sec'+(s===t?' on':'');
-    const nb=document.getElementById('nb-'+s);
-    if(nb)nb.className='nav-btn'+(s===t?' on':'');
-  });
-}
-
-// ── HELPERS ──
-function meusBriefings(){return B.filter(x=>isMe(x.owner||ME));}
-function grupoPorResp(){
-  const m={};
-  D.filter(x=>!x.done).forEach(x=>{
-    const nome=x.resp.split(/[,\/]/)[0].trim();
-    if(!m[nome])m[nome]={nome,cor:corP(nome),items:[]};
-    m[nome].items.push(x);
-  });
-  return Object.values(m);
-}
-function wppMsg(nome,items){
-  const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='Contínuo'?' ('+x.prazo+')':''}`).join('\n');
-  return `Oi, ${nome}! Passando pra deixar no radar alguns pontos em aberto:\n\n${its}\n\nQualquer coisa me chama. Obrigado!`;
-}
-function emailMsg(nome,items){
-  const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='Contínuo'?' — prazo: '+x.prazo:''}`).join('\n');
-  return `Oi, ${nome},\n\nPassando para um alinhamento rápido sobre pontos em aberto:\n\n${its}\n\nSe precisar de apoio ou tiver bloqueio, me avisa.\n\nObrigado!\n${ME}`;
-}
-function cpText(elId,btnId){
-  const el=document.getElementById(elId);
-  const text=el.tagName==='TEXTAREA'?el.value:el.textContent;
-  navigator.clipboard.writeText(text).then(()=>{
-    const btn=document.getElementById(btnId);
-    if(!btn)return;
-    const orig=btn.innerHTML;
-    btn.innerHTML='<span style="font-size:13px;line-height:1">✓</span> Copiado!';
-    btn.classList.add('ok');
-    setTimeout(()=>{btn.innerHTML=orig;btn.classList.remove('ok');},2000);
-  });
+  document.getElementById('pwd-section').style.display='none';
+  document.getElementById('pwd-input').value='';
+  document.getElementById('setup-error').classList.remove('show');
 }
 
 // ── KPIs ──
@@ -472,43 +517,15 @@ function rK(){
 function rB(){
   const mb=meusBriefings();
   let h=`<button class="btn-add" onclick="addB()"><span style="font-size:13px;line-height:1">＋</span> Adicionar</button>`;
-  const gr={};
-  SEMANAS.forEach(s=>{gr[s]=[];});
-  mb.forEach(x=>{if(gr[x.s])gr[x.s].push(x);});
+  const gr={};SEMANAS.forEach(s=>{gr[s]=[];});mb.forEach(x=>{if(gr[x.s])gr[x.s].push(x);});
   SEMANAS.forEach(sem=>{
     const its=gr[sem];if(!its||!its.length)return;
-    h+=`<div class="sec-hdr"><span style="font-size:11px;margin-right:4px;line-height:1">📅</span>Semana de ${sem} — avançar até segunda</div>`;
+    h+=`<div class="sec-hdr"><span style="font-size:11px;margin-right:4px;line-height:1">📅</span>Semana de ${sem}</div>`;
     its.forEach(item=>{
       if(editing===item.id){
-        h+=`<div class="card">
-          <span class="lbl">Título</span><textarea class="fa" id="bt-${item.id}">${item.title}</textarea>
-          <div class="row2">
-            <div><span class="lbl">Semana</span><select class="fi" id="bs-${item.id}">${SEMANAS.map(s=>`<option value="${s}"${s===item.s?' selected':''}>${s}</option>`).join('')}</select></div>
-            <div><span class="lbl">Status</span>${comboStatus(item.id+'b',item.status)}</div>
-          </div>
-          <div><span class="lbl">Área</span>${comboArea(item.id+'b',item.area)}</div>
-          <span class="lbl">Nota / contexto</span><textarea class="fa" id="bn-${item.id}">${item.nota||''}</textarea>
-          <div class="btn-row">
-            <button class="btn-primary" onclick="saveB('${item.id}')"><span style="font-size:13px;line-height:1">✓</span> Salvar</button>
-            <button class="btn-sm" onclick="editing=null;ra()">Cancelar</button>
-            <button class="btn-del" onclick="delB('${item.id}')"><span style="font-size:13px;line-height:1">🗑</span> Remover</button>
-          </div>
-        </div>`;
+        h+=`<div class="card"><span class="lbl">Título</span><textarea class="fa" id="bt-${item.id}">${item.title}</textarea><div class="row2"><div><span class="lbl">Semana</span><select class="fi" id="bs-${item.id}">${SEMANAS.map(s=>`<option value="${s}"${s===item.s?' selected':''}>${s}</option>`).join('')}</select></div><div><span class="lbl">Status</span>${comboStatus(item.id+'b',item.status)}</div></div><div><span class="lbl">Área</span>${comboArea(item.id+'b',item.area)}</div><span class="lbl">Nota / contexto</span><textarea class="fa" id="bn-${item.id}">${item.nota||''}</textarea><div class="btn-row"><button class="btn-primary" onclick="saveB('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delB('${item.id}')">🗑 Remover</button></div></div>`;
       }else{
-        h+=`<div class="card" style="${item.done?'opacity:.5':''}">
-          <div class="card-top">
-            <input type="checkbox" class="check" ${item.done?'checked':''} onchange="togB('${item.id}')">
-            <span class="card-title ${item.done?'done-t':''}" onclick="togC('${item.id}')">${item.title}</span>
-            <button class="icon-btn" onclick="editing='${item.id}';ra()"><span style="font-size:13px;line-height:1">✎</span></button>
-            <span class="chevron ti-chevron-placeholder" ${openC.has(item.id)?'open':''}" onclick="togC('${item.id}')"></i>
-          </div>
-          <div class="card-meta">
-            <span class="week-tag">${sem}</span>
-            <span class="area-tag">${item.area}</span>
-            <span class="pill ${pillClass(item.status)}">${statusLabel(item.status)}</span>
-          </div>
-          ${openC.has(item.id)&&item.nota?`<div class="card-body open"><div style="font-size:13px;color:var(--text-2);line-height:1.6">${item.nota}</div></div>`:''}
-        </div>`;
+        h+=`<div class="card" style="${item.done?'opacity:.5':''}"><div class="card-top"><input type="checkbox" class="check" ${item.done?'checked':''} onchange="togB('${item.id}')"><span class="card-title ${item.done?'done-t':''}" onclick="togC('${item.id}')">${item.title}</span><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button></div><div class="card-meta"><span class="week-tag">${sem}</span><span class="area-tag">${item.area}</span><span class="pill ${pillClass(item.status)}">${statusLabel(item.status)}</span></div>${openC.has(item.id)&&item.nota?`<div class="card-body open"><div style="font-size:13px;color:var(--text-2);line-height:1.6">${item.nota}</div></div>`:''}</div>`;
       }
     });
   });
@@ -517,37 +534,12 @@ function rB(){
 
 // ── PAUTA ──
 function rPa(){
-  let h=`<button class="btn-add" onclick="addPA()"><span style="font-size:13px;line-height:1">＋</span> Adicionar pauta</button>`;
+  let h=`<button class="btn-add" onclick="addPA()">＋ Adicionar pauta</button>`;
   PA.forEach(item=>{
     if(editing===item.id){
-      h+=`<div class="card">
-        <div class="row2">
-          <div><span class="lbl">Área</span><input class="fi" id="pa-${item.id}" value="${item.area}"></div>
-          <div><span class="lbl">Líder</span><input class="fi" id="pl-${item.id}" value="${item.lider}"></div>
-        </div>
-        <span class="lbl">Pergunta-chave</span><textarea class="fa" id="pp-${item.id}">${item.perg}</textarea>
-        <span class="lbl">KPI a apresentar</span><input class="fi" id="pk-${item.id}" value="${item.kpi}">
-        <span class="lbl">Decisão esperada</span><textarea class="fa" id="pd-${item.id}">${item.dec}</textarea>
-        <div class="btn-row">
-          <button class="btn-primary" onclick="savePA('${item.id}')"><span style="font-size:13px;line-height:1">✓</span> Salvar</button>
-          <button class="btn-sm" onclick="editing=null;ra()">Cancelar</button>
-          <button class="btn-del" onclick="delPA('${item.id}')"><span style="font-size:13px;line-height:1">🗑</span> Remover</button>
-        </div>
-      </div>`;
+      h+=`<div class="card"><div class="row2"><div><span class="lbl">Área</span><input class="fi" id="pa-${item.id}" value="${item.area}"></div><div><span class="lbl">Líder</span><input class="fi" id="pl-${item.id}" value="${item.lider}"></div></div><span class="lbl">Pergunta-chave</span><textarea class="fa" id="pp-${item.id}">${item.perg}</textarea><span class="lbl">KPI a apresentar</span><input class="fi" id="pk-${item.id}" value="${item.kpi}"><span class="lbl">Decisão esperada</span><textarea class="fa" id="pd-${item.id}">${item.dec}</textarea><div class="btn-row"><button class="btn-primary" onclick="savePA('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delPA('${item.id}')">🗑 Remover</button></div></div>`;
     }else{
-      h+=`<div class="card">
-        <div class="card-top">
-          <span class="card-title" onclick="togC('${item.id}')">${item.area} — ${item.lider}</span>
-          <button class="icon-btn" onclick="editing='${item.id}';ra()"><span style="font-size:13px;line-height:1">✎</span></button>
-          <span class="chevron ti-chevron-placeholder" ${openC.has(item.id)?'open':''}" onclick="togC('${item.id}')"></i>
-        </div>
-        <div class="card-meta"><span class="area-tag">${item.area}</span></div>
-        ${openC.has(item.id)?`<div class="card-body open">
-          <div style="margin-bottom:8px"><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Pergunta-chave</span><div style="font-size:13px;margin-top:3px">${item.perg}</div></div>
-          <div style="margin-bottom:8px"><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">KPI</span><div style="font-size:13px;color:var(--text-2);margin-top:3px">${item.kpi}</div></div>
-          <div><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Decisão esperada</span><div style="font-size:13px;margin-top:3px">${item.dec}</div></div>
-        </div>`:''}
-      </div>`;
+      h+=`<div class="card"><div class="card-top"><span class="card-title" onclick="togC('${item.id}')">${item.area} — ${item.lider}</span><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button></div><div class="card-meta"><span class="area-tag">${item.area}</span></div>${openC.has(item.id)?`<div class="card-body open"><div style="margin-bottom:8px"><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Pergunta-chave</span><div style="font-size:13px;margin-top:3px">${item.perg}</div></div><div style="margin-bottom:8px"><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">KPI</span><div style="font-size:13px;color:var(--text-2);margin-top:3px">${item.kpi}</div></div><div><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Decisão esperada</span><div style="font-size:13px;margin-top:3px">${item.dec}</div></div></div>`:''}</div>`;
     }
   });
   document.getElementById('s-pauta').innerHTML=h;
@@ -555,37 +547,15 @@ function rPa(){
 
 // ── ALERTAS ──
 function rAl(){
-  let h=`<button class="btn-add" onclick="addAL()"><span style="font-size:13px;line-height:1">＋</span> Adicionar alerta</button>`;
+  let h=`<button class="btn-add" onclick="addAL()">＋ Adicionar alerta</button>`;
   [['v','Crítico — ação imediata'],['a','Atenção — esta semana'],['b','Monitorar']].forEach(([n,lbl])=>{
     const its=AL.filter(x=>x.nivel===n);if(!its.length)return;
     h+=`<div class="al-hdr">${lbl}</div>`;
     its.forEach(item=>{
       if(editing===item.id){
-        h+=`<div class="card">
-          <div><span class="lbl">Nível</span><select class="fi" id="an-${item.id}" style="width:auto">
-            <option value="v"${item.nivel==='v'?' selected':''}>Crítico</option>
-            <option value="a"${item.nivel==='a'?' selected':''}>Atenção</option>
-            <option value="b"${item.nivel==='b'?' selected':''}>Monitorar</option>
-          </select></div>
-          <span class="lbl">Título</span><input class="fi" id="at-${item.id}" value="${item.title}">
-          <span class="lbl">Descrição</span><textarea class="fa" id="ad-${item.id}">${item.desc}</textarea>
-          <span class="lbl">Ação recomendada</span><textarea class="fa" id="aa-${item.id}">${item.acao}</textarea>
-          <div class="btn-row">
-            <button class="btn-primary" onclick="saveAL('${item.id}')"><span style="font-size:13px;line-height:1">✓</span> Salvar</button>
-            <button class="btn-sm" onclick="editing=null;ra()">Cancelar</button>
-            <button class="btn-del" onclick="delAL('${item.id}')"><span style="font-size:13px;line-height:1">🗑</span> Remover</button>
-          </div>
-        </div>`;
+        h+=`<div class="card"><div><span class="lbl">Nível</span><select class="fi" id="an-${item.id}" style="width:auto"><option value="v"${item.nivel==='v'?' selected':''}>Crítico</option><option value="a"${item.nivel==='a'?' selected':''}>Atenção</option><option value="b"${item.nivel==='b'?' selected':''}>Monitorar</option></select></div><span class="lbl">Título</span><input class="fi" id="at-${item.id}" value="${item.title}"><span class="lbl">Descrição</span><textarea class="fa" id="ad-${item.id}">${item.desc}</textarea><span class="lbl">Ação recomendada</span><textarea class="fa" id="aa-${item.id}">${item.acao}</textarea><div class="btn-row"><button class="btn-primary" onclick="saveAL('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delAL('${item.id}')">🗑 Remover</button></div></div>`;
       }else{
-        h+=`<div class="al al-${n}">
-          <div style="display:flex;align-items:flex-start;gap:8px">
-            <div class="al-t" style="flex:1">${item.title}</div>
-            <button class="icon-btn" onclick="editing='${item.id}';ra()"><span style="font-size:13px;line-height:1">✎</span></button>
-            <button class="icon-btn" onclick="delAL('${item.id}')"><span style="font-size:13px;line-height:1">🗑</span></button>
-          </div>
-          <div class="al-d">${item.desc}</div>
-          <div class="al-ac">→ ${item.acao}</div>
-        </div>`;
+        h+=`<div class="al al-${n}"><div style="display:flex;align-items:flex-start;gap:8px"><div class="al-t" style="flex:1">${item.title}</div><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button><button class="icon-btn" onclick="delAL('${item.id}')">🗑</button></div><div class="al-d">${item.desc}</div><div class="al-ac">→ ${item.acao}</div></div>`;
       }
     });
   });
@@ -594,39 +564,16 @@ function rAl(){
 
 // ── FECHAMENTO ──
 function rFc(){
-  let h=`<button class="btn-add" onclick="addF()"><span style="font-size:13px;line-height:1">＋</span> Adicionar item</button>`;
+  let h=`<button class="btn-add" onclick="addF()">＋ Adicionar item</button>`;
   [['d','Decisões tomadas esta semana'],['p','Pendências abertas']].forEach(([tipo,lbl])=>{
     const its=F.filter(x=>x.tipo===tipo);
     h+=`<div class="sec-hdr">${lbl}</div><div class="card">`;
     if(!its.length)h+=`<div style="font-size:13px;color:var(--text-3);padding:4px 0">Nenhum item.</div>`;
     its.forEach(item=>{
       if(editing===item.id){
-        h+=`<div style="padding:8px 0;border-bottom:1px solid var(--border-light)">
-          <div class="row2">
-            <div><span class="lbl">Tipo</span><select class="fi" id="ft-${item.id}" style="width:auto">
-              <option value="d"${item.tipo==='d'?' selected':''}>Decisão</option>
-              <option value="p"${item.tipo==='p'?' selected':''}>Pendência</option>
-            </select></div>
-            <div><span class="lbl">Prazo</span><input class="fi" id="fp-${item.id}" value="${item.prazo}"></div>
-          </div>
-          <span class="lbl">Descrição</span><textarea class="fa" id="fd-${item.id}">${item.texto}</textarea>
-          <span class="lbl">Responsável</span><input class="fi" id="fr-${item.id}" value="${item.resp}">
-          <div class="btn-row">
-            <button class="btn-primary" onclick="saveF('${item.id}')"><span style="font-size:13px;line-height:1">✓</span> Salvar</button>
-            <button class="btn-sm" onclick="editing=null;ra()">Cancelar</button>
-            <button class="btn-del" onclick="delF('${item.id}')"><span style="font-size:13px;line-height:1">🗑</span> Remover</button>
-          </div>
-        </div>`;
+        h+=`<div style="padding:8px 0;border-bottom:1px solid var(--border-light)"><div class="row2"><div><span class="lbl">Tipo</span><select class="fi" id="ft-${item.id}" style="width:auto"><option value="d"${item.tipo==='d'?' selected':''}>Decisão</option><option value="p"${item.tipo==='p'?' selected':''}>Pendência</option></select></div><div><span class="lbl">Prazo</span><input class="fi" id="fp-${item.id}" value="${item.prazo}"></div></div><span class="lbl">Descrição</span><textarea class="fa" id="fd-${item.id}">${item.texto}</textarea><span class="lbl">Responsável</span><input class="fi" id="fr-${item.id}" value="${item.resp}"><div class="btn-row"><button class="btn-primary" onclick="saveF('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delF('${item.id}')">🗑 Remover</button></div></div>`;
       }else{
-        h+=`<div class="fec-item" style="${item.done?'opacity:.5':''}">
-          <input type="checkbox" class="check" ${item.done?'checked':''} onchange="togFI('${item.id}')">
-          <div style="flex:1">
-            <div style="font-size:13px;${item.done?'text-decoration:line-through;color:var(--text-3)':''}">${item.texto}</div>
-            <div style="font-size:12px;color:var(--text-3);margin-top:3px">${item.resp} · ${item.prazo}</div>
-          </div>
-          <button class="icon-btn" onclick="editing='${item.id}';ra()"><span style="font-size:13px;line-height:1">✎</span></button>
-          <button class="icon-btn" onclick="delF('${item.id}')"><span style="font-size:13px;line-height:1">🗑</span></button>
-        </div>`;
+        h+=`<div class="fec-item" style="${item.done?'opacity:.5':''}"><input type="checkbox" class="check" ${item.done?'checked':''} onchange="togFI('${item.id}')"><div style="flex:1"><div style="font-size:13px;${item.done?'text-decoration:line-through;color:var(--text-3)':''}">${item.texto}</div><div style="font-size:12px;color:var(--text-3);margin-top:3px">${item.resp} · ${item.prazo}</div></div><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button><button class="icon-btn" onclick="delF('${item.id}')">🗑</button></div>`;
       }
     });
     h+=`</div>`;
@@ -638,48 +585,12 @@ function rFc(){
 function rFU(){
   const grupos=grupoPorResp();
   let h=`<div style="font-size:13px;color:var(--text-2);margin-bottom:12px;line-height:1.6">Gerado automaticamente das demandas. Toda nova demanda com responsável externo aparece aqui com a mensagem pronta.</div>`;
-  if(!grupos.length){
-    h+=`<div style="font-size:13px;color:var(--text-3);padding:2rem 0;text-align:center">Nenhuma demanda pendente para o time.</div>`;
-  }else{
+  if(!grupos.length){h+=`<div style="font-size:13px;color:var(--text-3);padding:2rem 0;text-align:center">Nenhuma demanda pendente para o time.</div>`;}
+  else{
     grupos.forEach((p,i)=>{
-      const isOpen=openPerson.has(i);
-      const tab=msgTab[i]||'wpp';
-      const isSent=sent[p.nome];
-      const hasNew=p.items.some(x=>x.isNew);
-      const msgId=`fmsg-${i}`,cpId=`fcp-${i}`;
-      const msg=tab==='wpp'?wppMsg(p.nome,p.items):emailMsg(p.nome,p.items);
-      h+=`<div class="person-card" style="${isSent?'opacity:.55':''}">
-        <div class="person-hdr" onclick="togPerson(${i})">
-          <div class="avatar" style="background:${p.cor}">${p.nome.slice(0,2).toUpperCase()}</div>
-          <div style="font-size:13px;font-weight:500;flex:1">${p.nome}</div>
-          <span class="pill pp" style="margin-right:4px">${p.items.length} pend.</span>
-          ${hasNew?`<span class="new-tag">novo</span>`:''}
-          ${isSent?`<span class="pill pk" style="margin-right:4px">Enviado</span>`:''}
-          <span class="chevron ti-chevron-placeholder" ${isOpen?'open':''}"></i>
-        </div>
-        ${isOpen?`<div class="person-body open">
-          <div style="margin-bottom:10px">
-            ${p.items.map(x=>`<div class="pi">
-              <div class="pdot"></div>
-              <div style="flex:1">
-                <div>${x.desc}${x.isNew?` <span class="new-tag">novo</span>`:''}</div>
-                <div style="font-size:11px;color:var(--text-3);margin-top:2px">${x.area} · ${x.prazo}</div>
-              </div>
-              <button class="icon-btn" onclick="event.stopPropagation();doneD('${x.id}')" title="Marcar concluído"><span style="font-size:13px;line-height:1">✓</span></button>
-            </div>`).join('')}
-          </div>
-          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px">Mensagem pronta</div>
-          <div class="msg-tabs">
-            <button class="msg-tab ${tab==='wpp'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='wpp';rFU()"><span style="font-size:13px;line-height:1">💬</span> WhatsApp</button>
-            <button class="msg-tab ${tab==='email'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='email';rFU()"><span style="font-size:13px;line-height:1">✉</span> E-mail</button>
-          </div>
-          <textarea class="msg-text" id="${msgId}">${msg}</textarea>
-          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">
-            <button class="btn-copy" id="${cpId}" onclick="event.stopPropagation();cpText('${msgId}','${cpId}')"><span style="font-size:13px;line-height:1">⎘</span> Copiar</button>
-            <button class="sent-btn ${isSent?'done':''}" onclick="event.stopPropagation();sent['${p.nome}']=!sent['${p.nome}'];ra()">${isSent?'✓ Enviado':'Marcar como enviado'}</button>
-          </div>
-        </div>`:''}
-      </div>`;
+      const isOpen=openPerson.has(i);const tab=msgTab[i]||'wpp';const isSent=sent[p.nome];const hasNew=p.items.some(x=>x.isNew);
+      const msgId=`fmsg-${i}`,cpId=`fcp-${i}`;const msg=tab==='wpp'?wppMsg(p.nome,p.items):emailMsg(p.nome,p.items);
+      h+=`<div class="person-card" style="${isSent?'opacity:.55':''}"><div class="person-hdr" onclick="togPerson(${i})"><div class="avatar" style="background:${p.cor}">${p.nome.slice(0,2).toUpperCase()}</div><div style="font-size:13px;font-weight:500;flex:1">${p.nome}</div><span class="pill pp" style="margin-right:4px">${p.items.length} pend.</span>${hasNew?`<span class="new-tag">novo</span>`:''}${isSent?`<span class="pill pk" style="margin-right:4px">Enviado</span>`:''}</div>${isOpen?`<div class="person-body open"><div style="margin-bottom:10px">${p.items.map(x=>`<div class="pi"><div class="pdot"></div><div style="flex:1"><div>${x.desc}${x.isNew?` <span class="new-tag">novo</span>`:''}</div><div style="font-size:11px;color:var(--text-3);margin-top:2px">${x.area} · ${x.prazo}</div></div><button class="icon-btn" onclick="event.stopPropagation();doneD('${x.id}')" title="Marcar concluído">✓</button></div>`).join('')}</div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px">Mensagem pronta</div><div class="msg-tabs"><button class="msg-tab ${tab==='wpp'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='wpp';rFU()">💬 WhatsApp</button><button class="msg-tab ${tab==='email'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='email';rFU()">✉ E-mail</button></div><textarea class="msg-text" id="${msgId}">${msg}</textarea><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px"><button class="btn-copy" id="${cpId}" onclick="event.stopPropagation();cpText('${msgId}','${cpId}')">⎘ Copiar</button><button class="sent-btn ${isSent?'done':''}" onclick="event.stopPropagation();sent['${p.nome}']=!sent['${p.nome}'];ra()">${isSent?'✓ Enviado':'Marcar como enviado'}</button></div></div>`:''}</div>`;
     });
   }
   document.getElementById('s-followup').innerHTML=h;
@@ -731,121 +642,28 @@ NOTAS:`;
 
   let prev='';
   if(previewItems.length){
-    prev=`<hr class="div">
-    <div style="font-size:14px;font-weight:500;margin-bottom:4px">Revise antes de confirmar</div>
-    <div style="font-size:12px;color:var(--text-2);margin-bottom:12px">Borda <span style="color:var(--week);font-weight:600">roxa</span> = você · <span style="color:#D4890A;font-weight:600">laranja</span> = outro</div>
-    <div id="prev-list"></div>
-    <div class="confirm-bar">
-      <button class="btn-primary" onclick="confirmar()"><span style="font-size:13px;line-height:1">✓</span> Confirmar demandas</button>
-      <button class="btn-sm" onclick="previewItems=[];rR();rK()">Descartar</button>
-      <span style="font-size:12px;color:var(--text-3)">${previewItems.length} demanda${previewItems.length!==1?'s':''}</span>
-    </div>`;
+    prev=`<hr class="div"><div style="font-size:14px;font-weight:500;margin-bottom:4px">Revise antes de confirmar</div><div style="font-size:12px;color:var(--text-2);margin-bottom:12px">Borda <span style="color:var(--week);font-weight:600">roxa</span> = você · <span style="color:#D4890A;font-weight:600">laranja</span> = outro</div><div id="prev-list"></div><div class="confirm-bar"><button class="btn-primary" onclick="confirmar()">✓ Confirmar demandas</button><button class="btn-sm" onclick="previewItems=[];rR();rK()">Descartar</button><span style="font-size:12px;color:var(--text-3)">${previewItems.length} demanda${previewItems.length!==1?'s':''}</span></div>`;
   }
-  document.getElementById('s-reuniao').innerHTML=`
-    <div class="proc-box">
-      <div style="font-size:15px;font-weight:600;margin-bottom:4px"><span style="font-size:14px;margin-right:6px;line-height:1">✦</span>Processador de reunião</div>
-      <div style="font-size:12px;color:var(--text-2);margin-bottom:1.25rem;line-height:1.6">Copie o prompt → envie no chat com as notas → cole o JSON → confirme os cards.</div>
-      <div class="proc-step">
-        <div class="step-num">1</div>
-        <div style="flex:1">
-          <div class="step-label">Copie o prompt e envie no chat com as notas</div>
-          <textarea class="prompt-ta" rows="5" id="prompt-ta" readonly>${promptText}</textarea>
-          <button class="btn-copy" id="cp-prompt" onclick="cpText('prompt-ta','cp-prompt')" style="margin-top:7px"><span style="font-size:13px;line-height:1">⎘</span> Copiar prompt</button>
-        </div>
-      </div>
-      <div class="proc-step">
-        <div class="step-num">2</div>
-        <div style="flex:1">
-          <div class="step-label">Cole o JSON aqui</div>
-          <div class="step-sub">Aceita com ou sem crases</div>
-          <textarea class="import-ta" id="json-in" placeholder="Cole aqui o que o Claude devolveu..."></textarea>
-          <div class="err-box" id="json-err">JSON inválido. Verifique se copiou o bloco completo.</div>
-          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-            <button class="btn-primary" onclick="importJSON()"><span style="font-size:13px;line-height:1">↓</span> Carregar demandas</button>
-            <button class="btn-sm" onclick="addPrevManual()"><span style="font-size:13px;line-height:1">＋</span> Adicionar manualmente</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    ${prev}
-  `;
+  document.getElementById('s-reuniao').innerHTML=`<div class="proc-box"><div style="font-size:15px;font-weight:600;margin-bottom:4px">✦ Processador de reunião</div><div style="font-size:12px;color:var(--text-2);margin-bottom:1.25rem;line-height:1.6">Copie o prompt → envie no chat com as notas → cole o JSON → confirme os cards.</div><div class="proc-step"><div class="step-num">1</div><div style="flex:1"><div class="step-label">Copie o prompt e envie no chat com as notas</div><textarea class="prompt-ta" rows="5" id="prompt-ta" readonly>${promptText}</textarea><button class="btn-copy" id="cp-prompt" onclick="cpText('prompt-ta','cp-prompt')" style="margin-top:7px">⎘ Copiar prompt</button></div></div><div class="proc-step"><div class="step-num">2</div><div style="flex:1"><div class="step-label">Cole o JSON aqui</div><div class="step-sub">Aceita com ou sem crases</div><textarea class="import-ta" id="json-in" placeholder="Cole aqui o que o Claude devolveu..."></textarea><div class="err-box" id="json-err">JSON inválido. Verifique se copiou o bloco completo.</div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn-primary" onclick="importJSON()">↓ Carregar demandas</button><button class="btn-sm" onclick="addPrevManual()">＋ Adicionar manualmente</button></div></div></div></div>${prev}`;
   if(previewItems.length)renderPreview();
 }
 
 // ── IMPORTAR JSON ──
 function importJSON(){
   const raw=document.getElementById('json-in').value.trim();
-  const err=document.getElementById('json-err');
-  err.classList.remove('show');
+  const err=document.getElementById('json-err');err.classList.remove('show');
   const cleaned=raw.replace(/```json|```/gi,'').trim();
-  const match=cleaned.match(/[\[{][\s\S]*/);
-  if(!match){err.classList.add('show');return;}
+  const match=cleaned.match(/[\[{][\s\S]*/);if(!match){err.classList.add('show');return;}
   try{
     const parsed=JSON.parse(match[0]);
-
-    // Formato novo: objeto com 4 arrays
     if(!Array.isArray(parsed)&&typeof parsed==='object'){
-      if(parsed.demandas&&Array.isArray(parsed.demandas)){
-        previewItems=parsed.demandas.map(x=>({
-          resp:String(x.resp||''),
-          desc:String(x.desc||''),
-          prazo:String(x.prazo||'A definir'),
-          area:String(x.area||'A definir')
-        }));
-      }
-      if(parsed.pauta&&Array.isArray(parsed.pauta)){
-        parsed.pauta.forEach(x=>{
-          PA.push({
-            id:'pa'+uid(),
-            area:String(x.area||''),
-            lider:String(x.lider||''),
-            perg:String(x.perg||''),
-            kpi:String(x.kpi||''),
-            dec:String(x.dec||'')
-          });
-        });
-      }
-      if(parsed.alertas&&Array.isArray(parsed.alertas)){
-        parsed.alertas.forEach(x=>{
-          AL.push({
-            id:'al'+uid(),
-            nivel:String(x.nivel||'b'),
-            title:String(x.title||''),
-            desc:String(x.desc||''),
-            acao:String(x.acao||'')
-          });
-        });
-      }
-      if(parsed.fechamento&&Array.isArray(parsed.fechamento)){
-        parsed.fechamento.forEach(x=>{
-          F.push({
-            id:'f'+uid(),
-            tipo:String(x.tipo||'p'),
-            texto:String(x.texto||''),
-            resp:String(x.resp||''),
-            prazo:String(x.prazo||''),
-            done:false
-          });
-        });
-      }
-      document.getElementById('json-in').value='';
-      rR();rK();
-      return;
+      if(parsed.demandas&&Array.isArray(parsed.demandas)){previewItems=parsed.demandas.map(x=>({resp:String(x.resp||''),desc:String(x.desc||''),prazo:String(x.prazo||'A definir'),area:String(x.area||'A definir')}));}
+      if(parsed.pauta&&Array.isArray(parsed.pauta)){parsed.pauta.forEach(x=>{PA.push({id:'pa'+uid(),area:String(x.area||''),lider:String(x.lider||''),perg:String(x.perg||''),kpi:String(x.kpi||''),dec:String(x.dec||'')});});}
+      if(parsed.alertas&&Array.isArray(parsed.alertas)){parsed.alertas.forEach(x=>{AL.push({id:'al'+uid(),nivel:String(x.nivel||'b'),title:String(x.title||''),desc:String(x.desc||''),acao:String(x.acao||'')});});}
+      if(parsed.fechamento&&Array.isArray(parsed.fechamento)){parsed.fechamento.forEach(x=>{F.push({id:'f'+uid(),tipo:String(x.tipo||'p'),texto:String(x.texto||''),resp:String(x.resp||''),prazo:String(x.prazo||''),done:false});});}
+      document.getElementById('json-in').value='';rR();rK();return;
     }
-
-    // Formato legado: array direto de demandas
-    if(Array.isArray(parsed)){
-      previewItems=parsed.map(x=>({
-        resp:String(x.resp||''),
-        desc:String(x.desc||''),
-        prazo:String(x.prazo||'A definir'),
-        area:String(x.area||'A definir')
-      }));
-      document.getElementById('json-in').value='';
-      rR();rK();
-      return;
-    }
-
+    if(Array.isArray(parsed)){previewItems=parsed.map(x=>({resp:String(x.resp||''),desc:String(x.desc||''),prazo:String(x.prazo||'A definir'),area:String(x.area||'A definir')}));document.getElementById('json-in').value='';rR();rK();return;}
     throw new Error('Formato não reconhecido');
   }catch(e){err.classList.add('show');}
 }
@@ -853,104 +671,38 @@ function importJSON(){
 function addPrevManual(){previewItems.push({resp:'',desc:'',prazo:'',area:'P&C'});rR();}
 
 function renderPreview(){
-  const list=document.getElementById('prev-list');
-  if(!list)return;
-  list.innerHTML='';
+  const list=document.getElementById('prev-list');if(!list)return;list.innerHTML='';
   previewItems.forEach((x,i)=>{
-    const div=document.createElement('div');
-    div.className='preview-item '+(isMe(x.resp)?'meu':'outro');
+    const div=document.createElement('div');div.className='preview-item '+(isMe(x.resp)?'meu':'outro');
     const grid=document.createElement('div');grid.className='row3';
-    const mkInp=(lbl,val,cb)=>{
-      const w=document.createElement('div');
-      const l=document.createElement('span');l.className='lbl';l.textContent=lbl;
-      const inp=document.createElement('input');inp.className='fi';inp.value=val;
-      inp.addEventListener('input',e=>{cb(e.target.value);});
-      w.appendChild(l);w.appendChild(inp);return w;
-    };
+    const mkInp=(lbl,val,cb)=>{const w=document.createElement('div');const l=document.createElement('span');l.className='lbl';l.textContent=lbl;const inp=document.createElement('input');inp.className='fi';inp.value=val;inp.addEventListener('input',e=>{cb(e.target.value);});w.appendChild(l);w.appendChild(inp);return w;};
     grid.appendChild(mkInp('Responsável',x.resp,v=>{previewItems[i].resp=v;div.className='preview-item '+(isMe(v)?'meu':'outro');}));
     grid.appendChild(mkInp('Prazo',x.prazo,v=>{previewItems[i].prazo=v;}));
-    const c3=document.createElement('div');
-    const l3=document.createElement('span');l3.className='lbl';l3.textContent='Área';
-    const sel=document.createElement('select');sel.className='fi';
-    allAreas().forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;if(a===x.area)o.selected=true;sel.appendChild(o);});
-    sel.addEventListener('change',e=>{previewItems[i].area=e.target.value;});
-    c3.appendChild(l3);c3.appendChild(sel);grid.appendChild(c3);
-    const dw=document.createElement('div');
-    const dl=document.createElement('span');dl.className='lbl';dl.textContent='Demanda';
-    const ta=document.createElement('textarea');ta.className='fa';ta.value=x.desc;ta.style.minHeight='40px';
-    ta.addEventListener('input',e=>{previewItems[i].desc=e.target.value;});
-    dw.appendChild(dl);dw.appendChild(ta);
-    const br=document.createElement('div');br.style.cssText='display:flex;justify-content:flex-end;margin-top:6px';
-    const bd=document.createElement('button');bd.className='btn-del';bd.innerHTML='<span style="font-size:13px;line-height:1">🗑</span> Remover';
-    bd.addEventListener('click',()=>{previewItems.splice(i,1);rR();rK();});
-    br.appendChild(bd);
-    div.appendChild(grid);div.appendChild(dw);div.appendChild(br);
-    list.appendChild(div);
+    const c3=document.createElement('div');const l3=document.createElement('span');l3.className='lbl';l3.textContent='Área';const sel=document.createElement('select');sel.className='fi';allAreas().forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;if(a===x.area)o.selected=true;sel.appendChild(o);});sel.addEventListener('change',e=>{previewItems[i].area=e.target.value;});c3.appendChild(l3);c3.appendChild(sel);grid.appendChild(c3);
+    const dw=document.createElement('div');const dl=document.createElement('span');dl.className='lbl';dl.textContent='Demanda';const ta=document.createElement('textarea');ta.className='fa';ta.value=x.desc;ta.style.minHeight='40px';ta.addEventListener('input',e=>{previewItems[i].desc=e.target.value;});dw.appendChild(dl);dw.appendChild(ta);
+    const br=document.createElement('div');br.style.cssText='display:flex;justify-content:flex-end;margin-top:6px';const bd=document.createElement('button');bd.className='btn-del';bd.textContent='🗑 Remover';bd.addEventListener('click',()=>{previewItems.splice(i,1);rR();rK();});br.appendChild(bd);
+    div.appendChild(grid);div.appendChild(dw);div.appendChild(br);list.appendChild(div);
   });
 }
 
 function confirmar(){
-  const meus=previewItems.filter(x=>isMe(x.resp));
-  const outros=previewItems.filter(x=>!isMe(x.resp));
+  const meus=previewItems.filter(x=>isMe(x.resp));const outros=previewItems.filter(x=>!isMe(x.resp));
   meus.forEach(x=>{B.push({id:'b'+uid(),s:SEMANAS[0],title:x.desc,area:x.area,status:"pendente",nota:`Prazo: ${x.prazo}`,done:false,owner:ME});});
   outros.forEach(x=>{D.push({id:'d'+uid(),resp:x.resp,area:x.area,desc:x.desc,prazo:x.prazo,status:"pendente",done:false,isNew:true});});
-  previewItems=[];
-  ra();
-  goTab(outros.length?'followup':'briefing');
+  previewItems=[];ra();goTab(outros.length?'followup':'briefing');
 }
 
 // ── EXPORTAR ──
 function rExp(){
-  const estado={exportadoEm:new Date().toLocaleDateString('pt-BR'),usuario:ME,semana:SEMANAS[0],
-    B:B.filter(x=>!x.done),D:D.filter(x=>!x.done),AL,PA,F:F.filter(x=>!x.done)};
+  const estado={exportadoEm:new Date().toLocaleDateString('pt-BR'),usuario:ME,semana:SEMANAS[0],B:B.filter(x=>!x.done),D:D.filter(x=>!x.done),AL,PA,F:F.filter(x=>!x.done)};
   const json=JSON.stringify(estado,null,2);
   const prompt=`Estou abrindo uma nova conversa — painel de gestão da Road.ag.\nUsuário: ${ME}\n\nESTADO ATUAL:\n\`\`\`json\n${json}\n\`\`\`\n\nCom base nisso:\n1. Gere o briefing da semana\n2. Liste os 3 alertas mais críticos\n3. Aponte o que está em risco se não sair esta semana`;
-  document.getElementById('s-exportar').innerHTML=`
-    <div class="export-box">
-      <div style="font-size:15px;font-weight:600;margin-bottom:4px"><span style="font-size:14px;margin-right:6px;line-height:1">⇅</span>Exportar para nova conversa</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:1.25rem">Use toda segunda-feira para abrir uma conversa nova sem perder contexto.</div>
-      <div class="proc-step">
-        <div class="step-num">1</div>
-        <div style="flex:1">
-          <div class="step-label">Copie e cole numa conversa nova</div>
-          <textarea class="prompt-ta" id="exp-prompt" rows="8" readonly>${prompt}</textarea>
-          <button class="btn-copy" id="cp-exp" onclick="cpText('exp-prompt','cp-exp')" style="margin-top:7px"><span style="font-size:13px;line-height:1">⎘</span> Copiar prompt</button>
-        </div>
-      </div>
-      <div class="proc-step" style="margin-top:1rem">
-        <div class="step-num">2</div>
-        <div style="flex:1">
-          <div class="step-label">Só o JSON — para importar em outro painel</div>
-          <textarea class="json-ta" id="exp-json" rows="5" readonly>${json}</textarea>
-          <button class="btn-copy" id="cp-json" onclick="cpText('exp-json','cp-json')" style="margin-top:7px"><span style="font-size:13px;line-height:1">⎘</span> Copiar JSON</button>
-        </div>
-      </div>
-    </div>
-    <div class="export-box">
-      <div style="font-size:15px;font-weight:600;margin-bottom:4px"><span style="font-size:14px;margin-right:6px;line-height:1">↑</span>Importar estado</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:10px">Cole aqui um JSON exportado de uma semana anterior.</div>
-      <textarea class="import-ta" id="imp-json" placeholder="Cole o JSON aqui..." style="min-height:80px"></textarea>
-      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn-primary" onclick="importarEstado()"><span style="font-size:13px;line-height:1">↓</span> Importar</button>
-        <span style="font-size:12px;color:var(--text-3)">Substitui o estado atual</span>
-      </div>
-    </div>
-    <div class="export-box" style="border-color:var(--red-border)">
-      <div style="font-size:13px;font-weight:600;margin-bottom:4px;color:var(--red)">⚠ Resetar painel</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:9px">Apaga todo o histórico salvo no navegador para o seu usuário. Use apenas se quiser começar do zero.</div>
-      <button class="btn-del" onclick="resetarPainel()" style="margin-left:0">🗑 Apagar histórico</button>
-    </div>
-  `;
+  document.getElementById('s-exportar').innerHTML=`<div class="export-box"><div style="font-size:15px;font-weight:600;margin-bottom:4px">⇅ Exportar para nova conversa</div><div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:1.25rem">Use toda segunda-feira para abrir uma conversa nova sem perder contexto.</div><div class="proc-step"><div class="step-num">1</div><div style="flex:1"><div class="step-label">Copie e cole numa conversa nova</div><textarea class="prompt-ta" id="exp-prompt" rows="8" readonly>${prompt}</textarea><button class="btn-copy" id="cp-exp" onclick="cpText('exp-prompt','cp-exp')" style="margin-top:7px">⎘ Copiar prompt</button></div></div><div class="proc-step" style="margin-top:1rem"><div class="step-num">2</div><div style="flex:1"><div class="step-label">Só o JSON — para importar em outro painel</div><textarea class="json-ta" id="exp-json" rows="5" readonly>${json}</textarea><button class="btn-copy" id="cp-json" onclick="cpText('exp-json','cp-json')" style="margin-top:7px">⎘ Copiar JSON</button></div></div></div><div class="export-box"><div style="font-size:15px;font-weight:600;margin-bottom:4px">↑ Importar estado</div><div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:10px">Cole aqui um JSON exportado de uma semana anterior.</div><textarea class="import-ta" id="imp-json" placeholder="Cole o JSON aqui..." style="min-height:80px"></textarea><div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn-primary" onclick="importarEstado()">↓ Importar</button><span style="font-size:12px;color:var(--text-3)">Substitui o estado atual</span></div></div><div class="export-box" style="border-color:var(--red-border)"><div style="font-size:13px;font-weight:600;margin-bottom:4px;color:var(--red)">⚠ Resetar painel</div><div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:9px">Apaga todo o histórico salvo no navegador para o seu usuário.</div><button class="btn-del" onclick="resetarPainel()" style="margin-left:0">🗑 Apagar histórico</button></div>`;
 }
 
 function importarEstado(){
-  const raw=document.getElementById('imp-json').value.trim();
-  if(!raw){alert('Cole o JSON antes de importar.');return;}
-  try{
-    const e=JSON.parse(raw.replace(/```json|```/gi,'').trim());
-    if(e.B)B=e.B;if(e.D)D=e.D;if(e.AL)AL=e.AL;if(e.PA)PA=e.PA;if(e.F)F=e.F;
-    salvar();ra();goTab('briefing');showToast('Estado importado!');
-  }catch(err){alert('JSON inválido.');}
+  const raw=document.getElementById('imp-json').value.trim();if(!raw){alert('Cole o JSON antes de importar.');return;}
+  try{const e=JSON.parse(raw.replace(/```json|```/gi,'').trim());if(e.B)B=e.B;if(e.D)D=e.D;if(e.AL)AL=e.AL;if(e.PA)PA=e.PA;if(e.F)F=e.F;salvar();ra();goTab('briefing');showToast('Estado importado!');}catch(err){alert('JSON inválido.');}
 }
 
 // ── INTERAÇÕES ──
@@ -962,27 +714,14 @@ function doneD(id){const x=D.find(i=>i.id===id);if(x){x.done=true;x.isNew=false;
 
 // ── CRUD ──
 function addB(){const n={id:'b'+uid(),s:SEMANAS[0],title:"Nova prioridade",area:"Liderança",status:"pendente",nota:"",done:false,owner:ME};B.push(n);editing=n.id;ra();}
-function saveB(id){
-  const x=B.find(i=>i.id===id);
-  x.title=document.getElementById('bt-'+id).value;
-  x.s=document.getElementById('bs-'+id).value;
-  x.status=getComboVal(id+'b','status')||x.status;
-  x.area=getComboVal(id+'b','area')||x.area;
-  x.nota=document.getElementById('bn-'+id).value;
-  if(!allAreas().includes(x.area))customAreas.push(x.area);
-  if(!allStatus().includes(x.status))customStatus.push(x.status);
-  editing=null;ra();
-}
+function saveB(id){const x=B.find(i=>i.id===id);x.title=document.getElementById('bt-'+id).value;x.s=document.getElementById('bs-'+id).value;x.status=getComboVal(id+'b','status')||x.status;x.area=getComboVal(id+'b','area')||x.area;x.nota=document.getElementById('bn-'+id).value;if(!allAreas().includes(x.area))customAreas.push(x.area);if(!allStatus().includes(x.status))customStatus.push(x.status);editing=null;ra();}
 function delB(id){B=B.filter(x=>x.id!==id);editing=null;ra();}
-
 function addPA(){const n={id:'pa'+uid(),area:"Nova área",lider:"",perg:"",kpi:"",dec:""};PA.push(n);editing=n.id;ra();}
 function savePA(id){const x=PA.find(i=>i.id===id);x.area=document.getElementById('pa-'+id).value;x.lider=document.getElementById('pl-'+id).value;x.perg=document.getElementById('pp-'+id).value;x.kpi=document.getElementById('pk-'+id).value;x.dec=document.getElementById('pd-'+id).value;editing=null;ra();}
 function delPA(id){PA=PA.filter(x=>x.id!==id);editing=null;ra();}
-
 function addAL(){const n={id:'al'+uid(),nivel:"a",title:"Novo alerta",desc:"",acao:""};AL.push(n);editing=n.id;ra();}
 function saveAL(id){const x=AL.find(i=>i.id===id);x.nivel=document.getElementById('an-'+id).value;x.title=document.getElementById('at-'+id).value;x.desc=document.getElementById('ad-'+id).value;x.acao=document.getElementById('aa-'+id).value;editing=null;ra();}
 function delAL(id){AL=AL.filter(x=>x.id!==id);editing=null;ra();}
-
 function addF(){const n={id:'f'+uid(),tipo:"p",texto:"Nova pendência",resp:"",prazo:"",done:false};F.push(n);editing=n.id;ra();}
 function saveF(id){const x=F.find(i=>i.id===id);x.tipo=document.getElementById('ft-'+id).value;x.texto=document.getElementById('fd-'+id).value;x.resp=document.getElementById('fr-'+id).value;x.prazo=document.getElementById('fp-'+id).value;editing=null;ra();}
 function delF(id){F=F.filter(x=>x.id!==id);editing=null;ra();}
@@ -990,8 +729,7 @@ function delF(id){F=F.filter(x=>x.id!==id);editing=null;ra();}
 function resetarPainel(){
   if(!confirm('Tem certeza? Isso apaga TODO o histórico do '+ME+' neste navegador.'))return;
   try{['B','D','PA','AL','F','customAreas','customStatus','nid'].forEach(k=>localStorage.removeItem(storKey(k)));}catch(e){}
-  B=[];D=[];PA=[];AL=[];F=[];customAreas=[];customStatus=[];nid=100;
-  ra();showToast('Painel resetado.');
+  B=[];D=[];PA=[];AL=[];F=[];customAreas=[];customStatus=[];nid=100;ra();showToast('Painel resetado.');
 }
 </script>
 </body>
