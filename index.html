@@ -258,6 +258,7 @@ hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
     <div id="s-fechamento" class="sec"></div>
     <div id="s-followup" class="sec"></div>
     <div id="s-reuniao" class="sec"></div>
+    <div id="s-historico" class="sec"></div>
     <div id="s-exportar" class="sec"></div>
   </div>
 </div>
@@ -420,7 +421,7 @@ function showToast(msg){
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),1800);
 }
-function ra(){rB();rPa();rAl();rFc();rFU();rR();rExp();rK();salvar();}
+function ra(){rB();rPa();rAl();rFc();rFU();rR();rH();rExp();rK();salvar();}
 
 // ── CAMPOS LIVRES ──
 function allAreas(){return [...AREAS_DEFAULT,...customAreas.filter(x=>!AREAS_DEFAULT.includes(x))];}
@@ -458,12 +459,12 @@ function getComboVal(id,type){
 
 // ── NAV ──
 function buildNav(){
-  const tabs=[{id:'briefing',label:'Briefing'},{id:'pauta',label:'Pauta'},{id:'alertas',label:'Alertas'},{id:'fechamento',label:'Fechamento'},{id:'followup',label:'Follow-up'},{id:'reuniao',label:'+ Reunião'},{id:'exportar',label:'↕ Estado'}];
+  const tabs=[{id:'briefing',label:'Briefing'},{id:'pauta',label:'Pauta'},{id:'alertas',label:'Alertas'},{id:'fechamento',label:'Fechamento'},{id:'followup',label:'Follow-up'},{id:'reuniao',label:'+ Reunião'},{id:'historico',label:'📂 Histórico'},{id:'exportar',label:'↕ Estado'}];
   document.getElementById('nav-bar').innerHTML=tabs.map(t=>`<button class="nav-btn${t.id==='briefing'?' on':''}" onclick="goTab('${t.id}')" id="nb-${t.id}">${t.label}<span class="nav-ct" id="ct-${t.id}"></span></button>`).join('');
 }
 function goTab(t){
   curTab=t;
-  ['briefing','pauta','alertas','fechamento','followup','reuniao','exportar'].forEach(s=>{
+  ['briefing','pauta','alertas','fechamento','followup','reuniao','historico','exportar'].forEach(s=>{
     document.getElementById('s-'+s).className='sec'+(s===t?' on':'');
     const nb=document.getElementById('nb-'+s);if(nb)nb.className='nav-btn'+(s===t?' on':'');
   });
@@ -690,6 +691,95 @@ function confirmar(){
   meus.forEach(x=>{B.push({id:'b'+uid(),s:SEMANAS[0],title:x.desc,area:x.area,status:"pendente",nota:`Prazo: ${x.prazo}`,done:false,owner:ME});});
   outros.forEach(x=>{D.push({id:'d'+uid(),resp:x.resp,area:x.area,desc:x.desc,prazo:x.prazo,status:"pendente",done:false,isNew:true});});
   previewItems=[];ra();goTab(outros.length?'followup':'briefing');
+}
+
+// ── HISTÓRICO ──
+function rH(){
+  // Coleta todas as demandas concluídas (Briefing + Follow-up)
+  const concB=B.filter(x=>x.done);
+  const concD=D.filter(x=>x.done);
+  const concF=F.filter(x=>x.done);
+
+  const total=concB.length+concD.length+concF.length;
+
+  let h=`<div style="font-size:13px;color:var(--text-2);margin-bottom:16px;line-height:1.6">
+    Registro de tudo que foi concluído — demandas, pendências e decisões. Total: <strong>${total} itens</strong>.
+  </div>`;
+
+  if(!total){
+    h+=`<div style="font-size:13px;color:var(--text-3);padding:2rem 0;text-align:center">Nenhum item concluído ainda. Conclua demandas no Briefing ou Fechamento para elas aparecerem aqui.</div>`;
+    document.getElementById('s-historico').innerHTML=h;
+    return;
+  }
+
+  // Agrupa briefings concluídos por semana
+  if(concB.length){
+    const gr={};
+    concB.forEach(x=>{if(!gr[x.s])gr[x.s]=[];gr[x.s].push(x);});
+    const semsOrdenadas=Object.keys(gr).sort((a,b)=>{
+      const [da,ma]=a.split('/').map(Number);
+      const [db,mb]=b.split('/').map(Number);
+      return (mb-ma)||(db-da);
+    });
+    h+=`<div class="sec-hdr">Minhas demandas concluídas</div>`;
+    semsOrdenadas.forEach(sem=>{
+      h+=`<div style="font-size:11px;font-weight:600;color:var(--week);margin:10px 0 5px;text-transform:uppercase;letter-spacing:.05em">Semana de ${sem}</div>`;
+      gr[sem].forEach(item=>{
+        h+=`<div class="card" style="opacity:.7;margin-bottom:6px">
+          <div class="card-top">
+            <span style="font-size:13px;color:var(--text-3)">✓</span>
+            <span class="card-title done-t" style="flex:1;margin-left:8px">${item.title}</span>
+          </div>
+          <div class="card-meta">
+            <span class="week-tag">${sem}</span>
+            <span class="area-tag">${item.area}</span>
+            <span class="pill pk">Concluído</span>
+          </div>
+        </div>`;
+      });
+    });
+  }
+
+  // Pendências/decisões concluídas do Fechamento
+  if(concF.length){
+    h+=`<div class="sec-hdr" style="margin-top:16px">Fechamentos concluídos</div>`;
+    concF.forEach(item=>{
+      const tipo=item.tipo==='d'?'Decisão':'Pendência';
+      const pillCls=item.tipo==='d'?'pk':'pm';
+      h+=`<div class="card" style="opacity:.7;margin-bottom:6px">
+        <div class="card-top">
+          <span style="font-size:13px;color:var(--text-3)">✓</span>
+          <span style="font-size:13px;flex:1;margin-left:8px;text-decoration:line-through;color:var(--text-3)">${item.texto}</span>
+        </div>
+        <div class="card-meta">
+          <span class="pill ${pillCls}">${tipo}</span>
+          <span class="area-tag">${item.resp}</span>
+          ${item.prazo?`<span style="font-size:11px;color:var(--text-3)">${item.prazo}</span>`:''}
+        </div>
+      </div>`;
+    });
+  }
+
+  // Demandas de outros concluídas (Follow-up)
+  if(concD.length){
+    h+=`<div class="sec-hdr" style="margin-top:16px">Demandas do time concluídas</div>`;
+    concD.forEach(item=>{
+      h+=`<div class="card" style="opacity:.7;margin-bottom:6px">
+        <div class="card-top">
+          <span style="font-size:13px;color:var(--text-3)">✓</span>
+          <span style="font-size:13px;flex:1;margin-left:8px;text-decoration:line-through;color:var(--text-3)">${item.desc}</span>
+        </div>
+        <div class="card-meta">
+          <span class="area-tag">${item.resp}</span>
+          <span class="area-tag">${item.area}</span>
+          ${item.prazo?`<span style="font-size:11px;color:var(--text-3)">${item.prazo}</span>`:''}
+          <span class="pill pk">Concluído</span>
+        </div>
+      </div>`;
+    });
+  }
+
+  document.getElementById('s-historico').innerHTML=h;
 }
 
 // ── EXPORTAR ──
