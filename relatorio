@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road · Relatório de Gestão</title>
+<style>
+:root{
+  --bg:#F7F6F3;--surface:#FFFFFF;--border:#E4E2DC;--border-light:#EEEDE9;
+  --text:#1A1916;--text-2:#6B6860;--text-3:#9C9A94;
+  --red:#C0392B;--red-bg:#FCECEA;--red-border:#E8A09A;
+  --amber:#A05A00;--amber-bg:#FEF3E2;--amber-border:#F0C070;
+  --blue:#1A4F8A;--blue-bg:#EAF1FB;--blue-border:#90B8E8;
+  --green:#1A6640;--green-bg:#E6F5EE;--green-border:#80C8A0;
+  --week:#2D2B55;--week-bg:#EEEDF8;
+  --radius:10px;--radius-sm:6px;--shadow:0 1px 3px rgba(0,0,0,.06)
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:var(--text);min-height:100vh}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;gap:1rem;height:52px;position:sticky;top:0;z-index:100}
+.logo{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+.sep{width:1px;height:20px;background:var(--border)}
+.header-title{font-size:14px;font-weight:500;flex:1}
+.header-sub{font-size:12px;color:var(--text-3)}
+.btn-refresh{font-size:12px;padding:5px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-2);cursor:pointer}
+.btn-refresh:hover{background:var(--bg)}
+.btn-refresh.loading{opacity:.5;pointer-events:none}
+.main{padding:1.5rem}
+
+/* NAV TABS */
+.tab-nav{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
+.tab-btn{padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text-2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.on{color:var(--text);border-bottom-color:var(--text)}
+.tab-sec{display:none}.tab-sec.on{display:block}
+
+/* KPIs */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.5rem}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.kpi-val{font-size:26px;font-weight:600;line-height:1}
+.kpi-lbl{font-size:11px;color:var(--text-3);margin-top:4px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:10px;box-shadow:var(--shadow)}
+.card-title{font-size:13px;font-weight:500;margin-bottom:.75rem}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:1.5rem 0 .75rem}
+.section-label:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+
+/* PILLS */
+.pill{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill-r{background:var(--red-bg);color:var(--red)}
+.pill-a{background:var(--amber-bg);color:var(--amber)}
+.pill-g{background:var(--green-bg);color:var(--green)}
+.pill-b{background:var(--blue-bg);color:var(--blue)}
+.pill-w{background:var(--week-bg);color:var(--week)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;font-weight:500;color:var(--text-3);padding:5px 8px;border-bottom:1px solid var(--border)}
+td{padding:7px 8px;border-bottom:1px solid var(--border-light);color:var(--text-2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+
+/* GESTOR */
+.gestor-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}
+.gestor-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+.gestor-header:hover{background:var(--bg)}
+.avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.gestor-name{font-size:14px;font-weight:500;flex:1}
+.gestor-body{display:none;padding:0 16px 16px}
+.gestor-body.open{display:block}
+.gestor-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:1rem;padding-top:12px;border-top:1px solid var(--border-light)}
+.gkpi{background:var(--bg);border-radius:var(--radius-sm);padding:8px 10px}
+.gkpi-val{font-size:20px;font-weight:600}
+.gkpi-lbl{font-size:10px;color:var(--text-3);margin-top:2px}
+
+/* ALERTAS */
+.al-item{border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:7px;border-left:3px solid}
+.al-v{background:var(--red-bg);border-color:var(--red)}
+.al-a{background:var(--amber-bg);border-color:#D4890A}
+.al-b{background:var(--blue-bg);border-color:var(--blue)}
+.al-v .at{color:#8B2020;font-size:12px;font-weight:600}
+.al-a .at{color:#7A4200;font-size:12px;font-weight:600}
+.al-b .at{color:#0C447C;font-size:12px;font-weight:600}
+.al-v .ad,.al-a .ad,.al-b .ad{font-size:11px;margin-top:3px;line-height:1.5}
+.al-v .ad{color:var(--red)}.al-a .ad{color:var(--amber)}.al-b .ad{color:var(--blue)}
+
+/* INSIGHT */
+.insight-box{background:var(--week-bg);border:1px solid #C5C3E8;border-radius:var(--radius);padding:1rem 1.1rem;margin-bottom:1.25rem}
+.insight-title{font-size:12px;font-weight:600;color:var(--week);margin-bottom:.5rem}
+.insight-item{font-size:12px;color:var(--week);line-height:1.8;padding-left:12px;position:relative}
+.insight-item::before{content:'›';position:absolute;left:0}
+
+/* BAR */
+.bar-wrap{background:var(--bg);border-radius:99px;height:5px;width:100%;margin-top:3px}
+.bar-fill{height:5px;border-radius:99px;transition:width .4s}
+
+/* USER ROW */
+.user-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-light)}
+.user-row:last-child{border-bottom:none}
+
+/* LOADING */
+.loading-screen{display:flex;align-items:center;justify-content:center;min-height:60vh;flex-direction:column;gap:12px}
+.spinner{width:24px;height:24px;border:2.5px solid var(--border);border-top-color:var(--text);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;color:var(--text-3);font-size:13px;padding:2rem 0}
+.last-update{font-size:11px;color:var(--text-3);text-align:right;margin-bottom:1rem}
+
+/* ATRASADO */
+.atrasado{background:var(--red-bg);border-left:3px solid var(--red);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:6px}
+.atrasado .at{font-size:12px;font-weight:600;color:#8B2020}
+.atrasado .ad{font-size:11px;color:var(--red);margin-top:2px}
+
+/* SNAPSHOT INFO */
+.snapshot-info{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;color:var(--green);margin-bottom:1rem}
+.no-snapshot{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;color:var(--amber);margin-bottom:1rem}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="logo">Road.ag</span>
+  <div class="sep"></div>
+  <span class="header-title">Relatório de Gestão</span>
+  <span class="header-sub" id="h-date"></span>
+  <button class="btn-refresh" id="btn-refresh" onclick="carregar()">↻ Atualizar</button>
+</div>
+
+<div class="main" id="main">
+  <div class="loading-screen">
+    <div class="spinner"></div>
+    <div style="font-size:13px;color:var(--text-3)">Carregando dados...</div>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = '1YVQe3fAElkjh_r_ZEFiwc45UmEbGi8rDMsmbqCUG188';
+const GESTORES = ['Vinicius','André','Sabrina','Miguel','Amanda','Thay'];
+const CORES = {Vinicius:"#1F3864",André:"#2E86AB",Sabrina:"#D64045",Miguel:"#3A7D44",Amanda:"#7C5CBF",Thay:"#E07A5F"};
+function cor(n){const k=Object.keys(CORES).find(k=>n&&n.includes(k));return k?CORES[k]:"#888";}
+
+let dadosSessoes=[], dadosDemandas=[], dadosAlertas=[], dadosEventos=[], dadosSnapshots=[];
+let curTab='visao-geral';
+let openGestor=new Set();
+
+document.getElementById('h-date').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+
+async function lerAba(nome){
+  try{
+    const r=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(nome)}`);
+    if(!r.ok)return[];
+    return parseCSV(await r.text());
+  }catch(e){return[];}
+}
+
+function parseCSV(txt){
+  const lines=txt.trim().split('\n');if(lines.length<2)return[];
+  const headers=parseLine(lines[0]);
+  return lines.slice(1).map(l=>{
+    const vals=parseLine(l);const obj={};
+    headers.forEach((h,i)=>obj[h.replace(/"/g,'')]=(vals[i]||'').replace(/"/g,''));
+    return obj;
+  });
+}
+function parseLine(line){
+  const result=[],re=/("(?:[^"]|"")*"|[^,]*)/g;let m;
+  while((m=re.exec(line))!==null){if(m.index===re.lastIndex)re.lastIndex++;result.push(m[1]);}
+  return result;
+}
+
+async function carregar(){
+  const btn=document.getElementById('btn-refresh');
+  btn.classList.add('loading');btn.textContent='↻ Carregando...';
+  [dadosSessoes,dadosDemandas,dadosAlertas,dadosEventos,dadosSnapshots]=await Promise.all([
+    lerAba('sessoes'),lerAba('demandas'),lerAba('alertas'),lerAba('eventos'),lerAba('snapshots')
+  ]);
+  renderizar();
+  btn.classList.remove('loading');btn.textContent='↻ Atualizar';
+}
+
+function goTab(t){
+  curTab=t;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn'+(b.dataset.tab===t?' on':''));
+  document.querySelectorAll('.tab-sec').forEach(s=>s.className='tab-sec'+(s.id==='tab-'+t?' on':''));
+}
+
+function renderizar(){
+  const main=document.getElementById('main');
+
+  // ── KPIs GERAIS ──
+  const hoje=new Date();
+  const set7=new Set();
+  dadosSessoes.forEach(s=>{try{const d=new Date(s.data_hora);if((hoje-d)/86400000<=7)set7.add(s.usuario);}catch(e){}});
+  const totalSessoes=dadosSessoes.length;
+  const usuariosAtivos=set7.size;
+  const demandasCriadas=dadosDemandas.filter(x=>x.acao==='criou').length;
+  const demandasConcluidas=dadosDemandas.filter(x=>x.acao==='concluiu').length;
+  const alertasCriticos=dadosAlertas.filter(x=>x.nivel==='v'&&x.acao!=='deletou').length;
+
+  // ── SNAPSHOTS: pegar o último por gestor ──
+  const snapshotPorGestor={};
+  dadosSnapshots.forEach(s=>{
+    try{
+      const usuario=s.usuario;
+      const dataHora=new Date(s.data_hora);
+      if(!snapshotPorGestor[usuario]||dataHora>new Date(snapshotPorGestor[usuario].data_hora)){
+        snapshotPorGestor[usuario]=s;
+      }
+    }catch(e){}
+  });
+
+  // ── INSIGHTS ──
+  const insights=[];
+  const inativos=GESTORES.filter(g=>!set7.has(g));
+  if(inativos.length)insights.push(`${inativos.join(', ')} não acessaram o painel nos últimos 7 dias`);
+  const semSnapshot=GESTORES.filter(g=>!snapshotPorGestor[g]);
+  if(semSnapshot.length)insights.push(`${semSnapshot.join(', ')} ainda não enviaram o snapshot desta semana`);
+  const txConclusao=demandasCriadas>0?Math.round(demandasConcluidas/demandasCriadas*100):0;
+  if(txConclusao<40&&demandasCriadas>0)insights.push(`Taxa de conclusão em ${txConclusao}% — muitas demandas abertas sem conclusão`);
+  if(alertasCriticos>=3)insights.push(`${alertasCriticos} alertas críticos ativos no sistema`);
+
+  // ── DEMANDAS ATRASADAS (das snapshots) ──
+  const atrasadas=[];
+  Object.entries(snapshotPorGestor).forEach(([gestor, snap])=>{
+    try{
+      const estado=JSON.parse(snap.estado||'{}');
+      const briefing=estado.briefing||[];
+      briefing.filter(x=>!x.done&&x.status==='urgente').forEach(d=>{
+        atrasadas.push({gestor, titulo:d.title||d.titulo||'', area:d.area||'', semana:d.semana||''});
+      });
+    }catch(e){}
+  });
+
+  main.innerHTML=`
+    <div class="last-update">Atualizado: ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</div>
+
+    ${insights.length?`<div class="insight-box"><div class="insight-title">✦ Insights automáticos</div>${insights.map(i=>`<div class="insight-item">${i}</div>`).join('')}</div>`:''}
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-val">${usuariosAtivos}<span style="font-size:14px;color:var(--text-3)">/${GESTORES.length}</span></div><div class="kpi-lbl">Ativos esta semana</div></div>
+      <div class="kpi"><div class="kpi-val">${totalSessoes}</div><div class="kpi-lbl">Acessos totais</div></div>
+      <div class="kpi"><div class="kpi-val">${demandasCriadas}</div><div class="kpi-lbl">Demandas criadas</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:var(--green)">${demandasConcluidas}</div><div class="kpi-lbl">Concluídas</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:var(--red)">${alertasCriticos}</div><div class="kpi-lbl">Alertas críticos</div></div>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn on" data-tab="visao-geral" onclick="goTab('visao-geral')">Visão geral</button>
+      <button class="tab-btn" data-tab="por-gestor" onclick="goTab('por-gestor')">Por gestor</button>
+      <button class="tab-btn" data-tab="alertas" onclick="goTab('alertas')">Alertas</button>
+      <button class="tab-btn" data-tab="atrasadas" onclick="goTab('atrasadas')">Atrasadas</button>
+      <button class="tab-btn" data-tab="atividade" onclick="goTab('atividade')">Atividade</button>
+    </div>
+
+    <div id="tab-visao-geral" class="tab-sec on">${renderVisaoGeral(snapshotPorGestor,set7)}</div>
+    <div id="tab-por-gestor" class="tab-sec">${renderPorGestor(snapshotPorGestor,set7)}</div>
+    <div id="tab-alertas" class="tab-sec">${renderAlertas(snapshotPorGestor)}</div>
+    <div id="tab-atrasadas" class="tab-sec">${renderAtrasadas(snapshotPorGestor)}</div>
+    <div id="tab-atividade" class="tab-sec">${renderAtividade()}</div>
+  `;
+}
+
+function renderVisaoGeral(snaps,set7){
+  const maxSessoes=Math.max(...GESTORES.map(g=>dadosSessoes.filter(x=>x.usuario&&x.usuario.includes(g)).length),1);
+  let h=`<div class="section-label">Uso por gestor esta semana</div><div class="card">`;
+  GESTORES.forEach(g=>{
+    const sessoes=dadosSessoes.filter(x=>x.usuario&&x.usuario.includes(g)).length;
+    const criadas=dadosDemandas.filter(x=>x.usuario&&x.usuario.includes(g)&&x.acao==='criou').length;
+    const concluidas=dadosDemandas.filter(x=>x.usuario&&x.usuario.includes(g)&&x.acao==='concluiu').length;
+    const ativo=set7.has(g);
+    const temSnap=!!snaps[g];
+    const pct=Math.round(sessoes/maxSessoes*100);
+    const ultima=dadosSessoes.filter(x=>x.usuario&&x.usuario.includes(g)).slice(-1)[0]?.data||'—';
+    h+=`<div class="user-row">
+      <div class="avatar" style="background:${cor(g)}">${g.slice(0,2).toUpperCase()}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span style="font-size:13px;font-weight:500">${g}</span>
+          <span class="pill ${ativo?'pill-g':'pill-r'}" style="font-size:10px">${ativo?'ativo':'inativo'}</span>
+          <span class="pill ${temSnap?'pill-g':'pill-a'}" style="font-size:10px">${temSnap?'snapshot enviado':'sem snapshot'}</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${cor(g)}"></div></div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px">${sessoes} acesso${sessoes!==1?'s':''} · ${criadas} criada${criadas!==1?'s':''} · ${concluidas} concluída${concluidas!==1?'s':''} · última visita: ${ultima}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:18px;font-weight:600;color:${cor(g)}">${criadas>0?Math.round(concluidas/criadas*100)+'%':'—'}</div>
+        <div style="font-size:10px;color:var(--text-3)">conclusão</div>
+      </div>
+    </div>`;
+  });
+  h+=`</div>`;
+
+  // Gráfico dia da semana
+  const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const cont=new Array(7).fill(0);
+  dadosSessoes.forEach(s=>{const i=dias.indexOf(s.dia_semana);if(i>=0)cont[i]++;});
+  const maxD=Math.max(...cont,1);
+  h+=`<div class="section-label">Acessos por dia da semana</div>
+    <div class="card"><div style="display:flex;align-items:flex-end;gap:8px;height:80px;padding:4px 0">
+      ${dias.map((d,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+        <div style="font-size:10px;color:var(--text-3)">${cont[i]||''}</div>
+        <div style="width:100%;background:var(--week);border-radius:3px 3px 0 0;height:${Math.round(cont[i]/maxD*52)+4}px;opacity:${cont[i]>0?1:.15}"></div>
+        <div style="font-size:10px;color:var(--text-3)">${d}</div>
+      </div>`).join('')}
+    </div></div>`;
+
+  return h;
+}
+
+function renderPorGestor(snaps,set7){
+  let h='';
+  GESTORES.forEach(g=>{
+    const snap=snaps[g];
+    const ativo=set7.has(g);
+    let estado={};
+    if(snap){
+      try{estado=JSON.parse(snap.estado||'{}');}catch(e){}
+    }
+    const briefing=estado.briefing||[];
+    const alertas=estado.alertas||[];
+    const pauta=estado.pauta||[];
+    const fechamento=estado.fechamento||[];
+    const followup=estado.followup||[];
+    const resumo=estado.resumo||{};
+
+    const isOpen=openGestor.has(g);
+    h+=`<div class="gestor-card">
+      <div class="gestor-header" onclick="togGestor('${g}')">
+        <div class="avatar" style="background:${cor(g)}">${g.slice(0,2).toUpperCase()}</div>
+        <div class="gestor-name">${g}</div>
+        ${snap?`<span style="font-size:11px;color:var(--text-3)">snapshot ${snap.data||''}</span>`:`<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--amber-bg);color:var(--amber)">sem snapshot</span>`}
+        <span class="pill ${ativo?'pill-g':'pill-r'}">${ativo?'ativo':'inativo'}</span>
+        <span style="font-size:16px;color:var(--text-3);transition:transform .15s;${isOpen?'transform:rotate(180deg)':''}">▾</span>
+      </div>
+      ${isOpen?`<div class="gestor-body open">
+        ${snap?`
+        <div class="gestor-kpis">
+          <div class="gkpi"><div class="gkpi-val" style="color:var(--red)">${resumo.urgentes||0}</div><div class="gkpi-lbl">Urgentes</div></div>
+          <div class="gkpi"><div class="gkpi-val">${resumo.abertos||0}</div><div class="gkpi-lbl">Em aberto</div></div>
+          <div class="gkpi"><div class="gkpi-val" style="color:var(--green)">${resumo.concluidos||0}</div><div class="gkpi-lbl">Concluídos</div></div>
+          <div class="gkpi"><div class="gkpi-val" style="color:var(--amber)">${resumo.followupsPendentes||0}</div><div class="gkpi-lbl">Follow-ups</div></div>
+        </div>
+
+        ${briefing.length?`
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:12px 0 6px">Briefing</div>
+          <table><tr><th>Demanda</th><th>Área</th><th>Status</th><th>Semana</th></tr>
+          ${briefing.map(d=>{
+            const cls=d.done?'pill-g':d.status==='urgente'?'pill-r':d.status==='pendente'?'pill-a':'pill-b';
+            const lbl=d.done?'Concluído':d.status==='urgente'?'Urgente':d.status==='pendente'?'Pendente':d.status||'—';
+            return `<tr style="${d.done?'opacity:.5':''}"><td style="font-size:12px">${d.title||d.titulo||'—'}</td><td style="font-size:11px">${d.area||'—'}</td><td><span class="pill ${cls}">${lbl}</span></td><td style="font-size:11px;color:var(--text-3)">${d.semana||'—'}</td></tr>`;
+          }).join('')}</table>`:''}
+
+        ${alertas.length?`
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:12px 0 6px">Alertas</div>
+          ${alertas.map(a=>`<div class="al-item al-${a.nivel||'b'}"><div class="at">${a.title||a.titulo||'—'}</div><div class="ad">${a.desc||''}</div></div>`).join('')}`:''}
+
+        ${pauta.length?`
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:12px 0 6px">Pauta</div>
+          <table><tr><th>Área</th><th>Líder</th><th>Pergunta-chave</th><th>Decisão esperada</th></tr>
+          ${pauta.map(p=>`<tr><td style="font-size:12px">${p.area||'—'}</td><td style="font-size:12px">${p.lider||'—'}</td><td style="font-size:12px">${p.perg||'—'}</td><td style="font-size:12px">${p.dec||'—'}</td></tr>`).join('')}</table>`:''}
+
+        ${fechamento.length?`
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:12px 0 6px">Fechamento</div>
+          ${fechamento.map(f=>`<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-light)">
+            <span class="pill ${f.tipo==='d'?'pill-g':'pill-a'}" style="flex-shrink:0">${f.tipo==='d'?'Decisão':'Pendência'}</span>
+            <div style="flex:1;font-size:12px;${f.done?'text-decoration:line-through;color:var(--text-3)':''}">${f.texto||'—'}</div>
+            <div style="font-size:11px;color:var(--text-3);flex-shrink:0">${f.resp||''} ${f.prazo?'· '+f.prazo:''}</div>
+          </div>`).join('')}`:''}
+
+        ${followup.length?`
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:12px 0 6px">Follow-up pendente</div>
+          <table><tr><th>Responsável</th><th>Demanda</th><th>Área</th><th>Prazo</th></tr>
+          ${followup.map(f=>`<tr><td style="font-size:12px;font-weight:500">${f.resp||'—'}</td><td style="font-size:12px">${f.desc||'—'}</td><td style="font-size:11px;color:var(--text-3)">${f.area||'—'}</td><td style="font-size:11px;color:var(--text-3)">${f.prazo||'—'}</td></tr>`).join('')}</table>`:''}
+        `:`<div class="no-snapshot">Nenhum snapshot recebido ainda. O gestor precisa clicar em "Enviar snapshot da semana" no painel toda sexta.</div>`}
+      </div>`:''}
+    </div>`;
+  });
+  return h||'<div class="empty">Nenhum dado disponível.</div>';
+}
+
+function renderAlertas(snaps){
+  let h='';
+  const niveis=[['v','🔴 Crítico — ação imediata'],['a','🟡 Atenção — esta semana'],['b','🔵 Monitorar']];
+  niveis.forEach(([n,lbl])=>{
+    const its=[];
+    Object.entries(snaps).forEach(([gestor,snap])=>{
+      try{
+        const estado=JSON.parse(snap.estado||'{}');
+        (estado.alertas||[]).filter(a=>a.nivel===n).forEach(a=>{its.push({gestor,...a});});
+      }catch(e){}
+    });
+    // também de dadosAlertas (eventos)
+    dadosAlertas.filter(x=>x.nivel===n&&x.acao!=='deletou').forEach(a=>{
+      if(!its.find(i=>i.titulo===a.titulo))its.push({gestor:a.usuario,titulo:a.titulo,desc:a.descricao,acao:a.acao_recomendada});
+    });
+    if(!its.length)return;
+    h+=`<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin:${n==='v'?'0':'1rem'} 0 .5rem">${lbl}</div>`;
+    its.forEach(a=>{
+      h+=`<div class="al-item al-${n}">
+        <div style="display:flex;align-items:center;gap:8px;justify-content:space-between">
+          <div class="at">${a.title||a.titulo||'—'}</div>
+          <span style="font-size:11px;padding:2px 8px;border-radius:99px;background:rgba(0,0,0,.08);color:inherit">${a.gestor||'—'}</span>
+        </div>
+        <div class="ad">${a.desc||a.descricao||''}</div>
+        ${a.acao||a.acao_recomendada?`<div style="font-size:11px;font-weight:500;margin-top:5px;color:inherit">→ ${a.acao||a.acao_recomendada}</div>`:''}
+      </div>`;
+    });
+  });
+  return h||'<div class="empty">Nenhum alerta registrado.</div>';
+}
+
+function renderAtrasadas(snaps){
+  let h=`<div style="font-size:13px;color:var(--text-2);margin-bottom:1rem;line-height:1.6">Demandas com status <strong>urgente</strong> ainda abertas no último snapshot de cada gestor.</div>`;
+  let total=0;
+  GESTORES.forEach(g=>{
+    const snap=snaps[g];if(!snap)return;
+    let estado={};
+    try{estado=JSON.parse(snap.estado||'{}');}catch(e){}
+    const urgentes=(estado.briefing||[]).filter(x=>!x.done&&x.status==='urgente');
+    if(!urgentes.length)return;
+    total+=urgentes.length;
+    h+=`<div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px">
+      <div class="avatar" style="background:${cor(g)};width:24px;height:24px;font-size:10px">${g.slice(0,2).toUpperCase()}</div>
+      <span style="font-size:12px;font-weight:600">${g}</span>
+      <span class="pill pill-r">${urgentes.length} urgente${urgentes.length!==1?'s':''}</span>
+    </div>`;
+    urgentes.forEach(d=>{
+      h+=`<div class="atrasado">
+        <div class="at">${d.title||d.titulo||'—'}</div>
+        <div class="ad">${d.area||''} ${d.semana?'· semana '+d.semana:''}</div>
+      </div>`;
+    });
+  });
+  if(!total)h+=`<div class="empty">Nenhuma demanda urgente em aberto nos snapshots recebidos.</div>`;
+  return h;
+}
+
+function renderAtividade(){
+  let h=`<div class="section-label">Últimas ações</div><div class="card">`;
+  const recentes=[...dadosDemandas].reverse().slice(0,20);
+  if(!recentes.length){h+=`<div class="empty">Nenhuma atividade registrada.</div></div>`;return h;}
+  h+=`<table><tr><th>Quando</th><th>Gestor</th><th>Ação</th><th>Demanda</th><th>Área</th></tr>`;
+  recentes.forEach(d=>{
+    const cls=d.acao==='criou'?'pill-b':d.acao==='concluiu'?'pill-g':d.acao==='deletou'?'pill-r':'pill-a';
+    h+=`<tr>
+      <td style="font-size:11px;color:var(--text-3)">${d.data_hora?new Date(d.data_hora).toLocaleDateString('pt-BR'):''}</td>
+      <td><span style="font-size:12px;font-weight:500;color:${cor(d.usuario)}">${d.usuario||'—'}</span></td>
+      <td><span class="pill ${cls}">${d.acao||'—'}</span></td>
+      <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.titulo||d.desc||'—'}</td>
+      <td style="font-size:11px;color:var(--text-3)">${d.area||'—'}</td>
+    </tr>`;
+  });
+  h+=`</table></div>`;
+  return h;
+}
+
+function togGestor(g){
+  if(openGestor.has(g))openGestor.delete(g);else openGestor.add(g);
+  renderizar();
+}
+
+carregar();
+</script>
+</body>
+</html>
