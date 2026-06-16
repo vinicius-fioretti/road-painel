@@ -22,9 +22,10 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .setup-error.show{display:block}
 .setup-btn{width:100%;padding:12px;background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer}
 .setup-btn:hover{opacity:.88}
+/* MODAIS */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
-.modal-card{background:var(--surface);border-radius:16px;padding:2rem;max-width:380px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.modal-card{background:var(--surface);border-radius:16px;padding:2rem;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto}
 .modal-title{font-size:16px;font-weight:600;margin-bottom:6px}
 .modal-sub{font-size:13px;color:var(--text-2);margin-bottom:1.25rem;line-height:1.5}
 .modal-input{width:100%;font-size:14px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:8px;font-family:inherit}
@@ -42,6 +43,9 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .header-switch:hover{background:var(--bg)}
 .header-pwd{font-size:12px;color:var(--text-3);cursor:pointer;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:none;flex-shrink:0}
 .header-pwd:hover{background:var(--bg)}
+/* CAPTURA RÁPIDA FLUTUANTE */
+.fab{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--text);color:#fff;font-size:22px;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:150;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.fab:hover{transform:scale(1.08)}
 .nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;overflow-x:auto}
 .nav::-webkit-scrollbar{display:none}
 .nav-btn{padding:12px 14px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text-2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;flex-shrink:0;transition:color .15s}
@@ -50,11 +54,13 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .nav-ct{display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;border-radius:99px;margin-left:5px;background:var(--surface-2);color:var(--text-3)}
 .nav-btn.on .nav-ct{background:#FCECEA;color:var(--red)}
 .nav-new{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
-.kpi-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:1rem 1.5rem}
-@media(max-width:640px){.kpi-bar{grid-template-columns:repeat(3,1fr)}}
+.kpi-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:1rem 1.5rem}
+@media(max-width:768px){.kpi-bar{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.kpi-bar{grid-template-columns:repeat(2,1fr)}}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
 .kpi-val{font-size:24px;font-weight:600;line-height:1}
 .kpi-lbl{font-size:11px;color:var(--text-3);margin-top:4px}
+.kpi.kpi-alert{border-color:var(--red-border);background:var(--red-bg)}
 .main{padding:0 1.5rem 2rem}
 .sec{display:none}.sec.on{display:block}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;box-shadow:var(--shadow)}
@@ -63,13 +69,22 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .card-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-top:6px;padding-left:23px}
 .card-body{display:none;margin-top:10px;border-top:1px solid var(--border-light);padding-top:10px}
 .card-body.open{display:block}
+/* PRAZO VENCIDO — destaque visual automático */
+.card.overdue{border-left:3px solid var(--red);background:linear-gradient(to right,var(--red-bg) 0%,var(--surface) 40%)}
+.overdue-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--red);color:#fff;white-space:nowrap}
 .pill{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px;white-space:nowrap}
 .pu{background:var(--red-bg);color:var(--red)}.pp{background:var(--amber-bg);color:var(--amber)}.pm{background:var(--blue-bg);color:var(--blue)}.pl{background:#EAF3DE;color:#3B6D11}.pk{background:var(--green-bg);color:var(--green)}
 .area-tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
 .week-tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--week-bg);color:var(--week);font-weight:500}
 .new-tag{font-size:10px;padding:1px 6px;border-radius:99px;background:var(--red-bg);color:var(--red);font-weight:600}
+/* WIP badge por área */
+.wip-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.wip-item{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid var(--border);color:var(--text-2);background:var(--surface-2)}
+.wip-item.wip-high{background:var(--red-bg);color:var(--red);border-color:var(--red-border);font-weight:600}
+.wip-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:6px;display:block}
 .lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-top:10px;display:block}
 .fi{width:100%;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;margin-top:4px}
+.fi[type=date]{color:var(--text)}
 .fa{width:100%;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;margin-top:4px;resize:vertical;min-height:52px;line-height:1.5}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
@@ -94,8 +109,6 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .icon-btn:hover{background:var(--bg);color:var(--text)}
 .btn-row{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;align-items:center}
 .check{accent-color:var(--text);width:15px;height:15px;cursor:pointer;flex-shrink:0;margin-top:2px}
-.chevron{font-size:14px;color:var(--text-3);transition:transform .15s;flex-shrink:0;cursor:pointer}
-.chevron.open{transform:rotate(180deg)}
 .done-t{text-decoration:line-through;color:var(--text-3)}
 .sec-hdr{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);padding:8px 0 5px;margin-top:10px;border-top:1px solid var(--border-light)}
 .sec-hdr:first-of-type{border-top:none;margin-top:0}
@@ -134,6 +147,32 @@ body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 .snap-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
 .json-ta{width:100%;font-size:11px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text-2);font-family:monospace;resize:vertical;min-height:80px;line-height:1.5;margin-top:7px}
 hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
+/* PULSO — aba de integração com dados */
+.pulso-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem}
+@media(max-width:640px){.pulso-grid{grid-template-columns:1fr 1fr}}
+.pulso-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.pulso-card.p-red{border-color:var(--red-border);background:var(--red-bg)}
+.pulso-card.p-amber{border-color:var(--amber-border);background:var(--amber-bg)}
+.pulso-card.p-green{border-color:var(--green-border);background:var(--green-bg)}
+.pulso-kpi{font-size:22px;font-weight:700;line-height:1}
+.pulso-lbl{font-size:11px;color:var(--text-3);margin-top:3px}
+.pulso-trend{font-size:11px;font-weight:600;margin-top:4px}
+.pulso-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+.pulso-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:10px}
+.pulso-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-light);font-size:13px}
+.pulso-row:last-child{border-bottom:none}
+.pulso-bar-wrap{flex:1;background:var(--surface-2);border-radius:99px;height:6px;overflow:hidden}
+.pulso-bar-fill{height:100%;border-radius:99px;background:var(--week)}
+.pulso-bar-fill.red{background:var(--red)}.pulso-bar-fill.amber{background:#D4890A}.pulso-bar-fill.green{background:var(--green)}
+.insight-box{background:var(--week-bg);border:1px solid var(--week);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
+.insight-box .insight-t{font-size:12px;font-weight:700;color:var(--week);margin-bottom:4px}
+.insight-box .insight-d{font-size:13px;color:var(--text);line-height:1.6}
+.insight-box.i-red{background:var(--red-bg);border-color:var(--red)}
+.insight-box.i-red .insight-t{color:var(--red)}
+.insight-box.i-amber{background:var(--amber-bg);border-color:#D4890A}
+.insight-box.i-amber .insight-t{color:var(--amber)}
+/* FU edit card */
+.fu-edit-card{background:var(--surface);border:1px solid var(--amber-border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;font-size:13px;padding:10px 18px;border-radius:var(--radius-sm);box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
 </style>
@@ -169,6 +208,7 @@ hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
   </div>
 </div>
 
+<!-- Modal senha -->
 <div class="modal-overlay" id="modal-pwd">
   <div class="modal-card">
     <div class="modal-title">🔒 Alterar senha</div>
@@ -184,6 +224,42 @@ hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
   </div>
 </div>
 
+<!-- Modal captura rápida -->
+<div class="modal-overlay" id="modal-quick">
+  <div class="modal-card">
+    <div class="modal-title">⚡ Captura rápida</div>
+    <div class="modal-sub">Registre uma demanda agora sem abrir o processador.</div>
+    <span class="lbl" style="margin-top:0">É para mim ou para o time?</span>
+    <div style="display:flex;gap:8px;margin-top:6px;margin-bottom:10px">
+      <button id="qk-tipo-b" class="btn-primary" style="flex:1;font-size:12px" onclick="setQuickTipo('b')">Para mim (Briefing)</button>
+      <button id="qk-tipo-d" class="btn-sm" style="flex:1;font-size:12px" onclick="setQuickTipo('d')">Para o time (Follow-up)</button>
+    </div>
+    <div id="qk-resp-wrap" style="display:none">
+      <span class="lbl">Responsável</span>
+      <select class="modal-input" id="qk-resp" style="margin-bottom:8px">
+        <option value="">Selecione...</option>
+      </select>
+    </div>
+    <span class="lbl">Demanda</span>
+    <textarea class="modal-input" id="qk-desc" placeholder="Descreva a ação..." style="min-height:56px;resize:vertical;margin-top:4px"></textarea>
+    <div class="row2" style="gap:8px;margin-top:4px">
+      <div>
+        <span class="lbl">Área</span>
+        <select class="modal-input" id="qk-area" style="margin-bottom:0"></select>
+      </div>
+      <div>
+        <span class="lbl">Prazo</span>
+        <input type="date" class="modal-input" id="qk-prazo" style="margin-bottom:0">
+      </div>
+    </div>
+    <div class="modal-error" id="qk-error"></div>
+    <div class="modal-btns" style="margin-top:12px">
+      <button class="btn-primary" onclick="saveQuick()">✓ Salvar</button>
+      <button class="btn-sm" onclick="fecharQuick()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <div id="app">
   <div class="header">
     <span class="header-logo">Road.ag</span>
@@ -195,9 +271,10 @@ hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
   </div>
   <div class="nav" id="nav-bar"></div>
   <div class="kpi-bar">
-    <div class="kpi"><div class="kpi-val" id="k1" style="color:var(--red)">0</div><div class="kpi-lbl">Urgentes (eu)</div></div>
-    <div class="kpi"><div class="kpi-val" id="k2">0</div><div class="kpi-lbl">Esta semana</div></div>
-    <div class="kpi"><div class="kpi-val" id="k3" style="color:var(--red)">0</div><div class="kpi-lbl">Alertas críticos</div></div>
+    <div class="kpi" id="kpi-urgentes"><div class="kpi-val" id="k1" style="color:var(--red)">0</div><div class="kpi-lbl">Urgentes (eu)</div></div>
+    <div class="kpi" id="kpi-semana"><div class="kpi-val" id="k2">0</div><div class="kpi-lbl">Esta semana</div></div>
+    <div class="kpi" id="kpi-atrasados"><div class="kpi-val" id="k6" style="color:var(--red)">0</div><div class="kpi-lbl">⚠ Atrasados</div></div>
+    <div class="kpi" id="kpi-alertas"><div class="kpi-val" id="k3" style="color:var(--red)">0</div><div class="kpi-lbl">Alertas críticos</div></div>
     <div class="kpi"><div class="kpi-val" id="k4" style="color:var(--green)">0</div><div class="kpi-lbl">Concluídos</div></div>
     <div class="kpi"><div class="kpi-val" id="k5" style="color:var(--amber)">0</div><div class="kpi-lbl">Follow-ups</div></div>
   </div>
@@ -207,22 +284,25 @@ hr.div{border:none;border-top:1px solid var(--border-light);margin:1.25rem 0}
     <div id="s-alertas" class="sec"></div>
     <div id="s-fechamento" class="sec"></div>
     <div id="s-followup" class="sec"></div>
+    <div id="s-pulso" class="sec"></div>
     <div id="s-reuniao" class="sec"></div>
     <div id="s-historico" class="sec"></div>
     <div id="s-exportar" class="sec"></div>
   </div>
 </div>
 
+<!-- FAB captura rápida -->
+<button class="fab" id="fab-btn" style="display:none" onclick="abrirQuick()" title="Captura rápida (⚡)">＋</button>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ── RASTREAMENTO ──
 const APPS_URL='https://script.google.com/macros/s/AKfycbw85zgWLSgRmQuD4CKc8oopc5RI-22yo55cNPs3j0PMBDBAyI2Nx0XVrIqF0hYzDgSNGg/exec';
 function track(p){if(!ME)return;try{fetch(APPS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({...p,usuario:ME})});}catch(e){}}
 
 // ── CONFIG ──
 function gerarSemanas(){
-  const s=[],h=new Date(),d=new Date(h),dia=d.getDay(),diff=dia===0?-6:1-dia;
+  const s=[],d=new Date(),dia=d.getDay(),diff=dia===0?-6:1-dia;
   d.setDate(d.getDate()+diff);
   for(let i=0;i<26;i++){s.push(`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`);d.setDate(d.getDate()+7);}
   return s;
@@ -230,13 +310,52 @@ function gerarSemanas(){
 const SEMANAS=gerarSemanas();
 const AREAS_DEFAULT=["P&C","Liderança","Financeiro","Tech/Ferramentas","Comercial","CEO/Estratégia","Operações","Núcleo A","Núcleo B","Núcleo CBF","CRM","Criação","Performance","Squad 1","Squad 2","Squad 3","Squad 4","Squad 5","A definir"];
 const STATUS_DEFAULT=["urgente","pendente","monitorar","planejado","ok"];
+const PESSOAS_DEFAULT=["Vinicius","André","Sabrina","Miguel","Amanda","Thay","Ju","Eric","Erick","Bruna","Lucas Holanda","Baldner","Jéssica","Darlan","Carla","Iza","Gi","Davila","Leticia","Ian"];
 const CORES={Vinicius:"#1F3864",André:"#2E86AB",Sabrina:"#D64045",Miguel:"#3A7D44",Amanda:"#7C5CBF",Thay:"#E07A5F",Ju:"#9C6B98",Eric:"#6B4226",Erick:"#6B4226",Bruna:"#7A6C5D",Julia:"#5A7A6B",Ian:"#2D6A4F",Lucas:"#1B6CA8",Baldner:"#4A7C59",Jéssica:"#C2566A",Jessica:"#C2566A",Darlan:"#6B4F9E",Carla:"#2E7D6B",Iza:"#B5541F",Gi:"#456B8C",Davila:"#7B3F6E",Leticia:"#3D6B3F"};
 function corP(n){const k=Object.keys(CORES).find(k=>n&&n.toLowerCase().includes(k.toLowerCase()));return k?CORES[k]:"#888";}
+// WIP limit por área (metodologia ágil)
+const WIP_LIMIT=3;
 
 let ME="",nid=500;const uid=()=>nid++;
-let editing=null,openC=new Set(),openPerson=new Set(),msgTab={},sent={};
+let editing=null,editingFU=null,quickTipo='b';
+let openC=new Set(),openPerson=new Set(),msgTab={},sent={};
 let previewItems=[],curTab="briefing",customAreas=[],customStatus=[];
 let B=[],D=[],PA=[],AL=[],F=[];
+
+// ── PRAZO HELPERS ──
+// Converte string de prazo para Date. Aceita: "DD/MM", "DD/MM/YYYY", "YYYY-MM-DD"
+function parsePrazo(p){
+  if(!p||p==='A definir'||p===''||p==='Contínuo')return null;
+  // ISO date (input type=date)
+  if(/^\d{4}-\d{2}-\d{2}$/.test(p)){const[y,m,d]=p.split('-');return new Date(+y,+m-1,+d);}
+  // Nota "Prazo: DD/MM/YYYY" vinda do processador
+  const notaM=p.match(/(\d{2})\/(\d{2})(?:\/(\d{4}))?/);
+  if(notaM){
+    const dia=+notaM[1],mes=+notaM[2]-1,ano=notaM[3]?+notaM[3]:new Date().getFullYear();
+    return new Date(ano,mes,dia);
+  }
+  return null;
+}
+function isOverdue(prazo){
+  const d=parsePrazo(prazo);if(!d)return false;
+  const hoje=new Date();hoje.setHours(0,0,0,0);d.setHours(0,0,0,0);
+  return d<hoje;
+}
+function isDueToday(prazo){
+  const d=parsePrazo(prazo);if(!d)return false;
+  const hoje=new Date();hoje.setHours(0,0,0,0);d.setHours(0,0,0,0);
+  return d.getTime()===hoje.getTime();
+}
+function formatPrazo(p){
+  if(!p||p==='A definir'||p===''||p==='Contínuo')return p||'A definir';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(p)){const[y,m,d]=p.split('-');return `${d}/${m}/${y}`;}
+  return p;
+}
+// Retorna 'DD/MM/YYYY' para hoje + n dias
+function prazoDefault(dias=7){
+  const d=new Date();d.setDate(d.getDate()+dias);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
 // ── SENHA ──
 function pwdKey(u){return `road_pwd_${u}`;}
@@ -272,12 +391,12 @@ function iniciar(){
   const loaded=carregar();if(!loaded)carregarBase();
   document.getElementById('setup-screen').style.display='none';
   document.getElementById('app').style.display='block';
+  document.getElementById('fab-btn').style.display='flex';
   document.getElementById('h-user').textContent=ME;
   const s=SEMANAS[0],fim=semanaFim(s);
   document.getElementById('h-week').textContent=`Semana de ${s} — ${fim}`;
   buildNav();ra();
   track({tipo:'sessao'});
-  track({tipo:'evento',evento:'abriu_painel',descricao:'Painel aberto'});
 }
 
 function abrirModalSenha(){document.getElementById('m-pwd-atual').value='';document.getElementById('m-pwd-nova').value='';document.getElementById('m-pwd-conf').value='';document.getElementById('modal-error').classList.remove('show');document.getElementById('modal-pwd').classList.add('show');}
@@ -294,6 +413,52 @@ function salvarNovaSenha(){
 function semanaFim(s){
   const parts=s.split('/'),d=new Date(new Date().getFullYear(),parseInt(parts[1])-1,parseInt(parts[0]));
   d.setDate(d.getDate()+4);return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+}
+
+// ── CAPTURA RÁPIDA ──
+function abrirQuick(){
+  quickTipo='b';
+  setQuickTipo('b');
+  // Preenche selects
+  const areaEl=document.getElementById('qk-area');
+  areaEl.innerHTML=allAreas().map(a=>`<option value="${a}">${a}</option>`).join('');
+  const respEl=document.getElementById('qk-resp');
+  respEl.innerHTML=`<option value="">Selecione...</option>`+PESSOAS_DEFAULT.filter(p=>p.toLowerCase()!==ME.toLowerCase()).map(p=>`<option value="${p}">${p}</option>`).join('');
+  document.getElementById('qk-desc').value='';
+  document.getElementById('qk-prazo').value=prazoDefault(7);
+  document.getElementById('qk-error').classList.remove('show');
+  document.getElementById('modal-quick').classList.add('show');
+  setTimeout(()=>document.getElementById('qk-desc').focus(),100);
+}
+function fecharQuick(){document.getElementById('modal-quick').classList.remove('show');}
+function setQuickTipo(t){
+  quickTipo=t;
+  document.getElementById('qk-tipo-b').className=t==='b'?'btn-primary':'btn-sm';
+  document.getElementById('qk-tipo-b').style.flex='1';document.getElementById('qk-tipo-b').style.fontSize='12px';
+  document.getElementById('qk-tipo-d').className=t==='d'?'btn-primary':'btn-sm';
+  document.getElementById('qk-tipo-d').style.flex='1';document.getElementById('qk-tipo-d').style.fontSize='12px';
+  document.getElementById('qk-resp-wrap').style.display=t==='d'?'block':'none';
+}
+function saveQuick(){
+  const desc=document.getElementById('qk-desc').value.trim();
+  const area=document.getElementById('qk-area').value;
+  const prazo=document.getElementById('qk-prazo').value;
+  const err=document.getElementById('qk-error');err.classList.remove('show');
+  if(!desc){err.textContent='Descreva a demanda.';err.classList.add('show');return;}
+  if(quickTipo==='b'){
+    const id='b'+uid();
+    B.push({id,s:SEMANAS[0],title:desc,area,status:'pendente',nota:'',done:false,owner:ME,prazo});
+    track({tipo:'demanda',acao:'criou_rapido',id,titulo:desc,area,prazo});
+    showToast('Adicionado ao Briefing!');
+  }else{
+    const resp=document.getElementById('qk-resp').value;
+    if(!resp){err.textContent='Selecione o responsável.';err.classList.add('show');return;}
+    const id='d'+uid();
+    D.push({id,resp,area,desc,prazo,status:'pendente',done:false,isNew:true});
+    track({tipo:'demanda',acao:'criou_rapido_fu',id,titulo:desc,area,resp,prazo});
+    showToast('Adicionado ao Follow-up!');
+  }
+  fecharQuick();ra();
 }
 
 // ── PERSISTÊNCIA ──
@@ -319,33 +484,22 @@ function carregar(){
 }
 function carregarBase(){B=[];D=[];PA=[];AL=[];F=[];customAreas=[];customStatus=[];}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
-function ra(){rB();rPa();rAl();rFc();rFU();rR();rH();rExp();rK();salvar();}
+function ra(){rB();rPa();rAl();rFc();rFU();rPulso();rR();rH();rExp();rK();salvar();}
 
-// ── SNAPSHOT SEMANAL ──
+// ── SNAPSHOT ──
 function enviarSnapshot(){
   const btn=document.getElementById('btn-snap');
   if(btn){btn.disabled=true;btn.textContent='⏳ Enviando...';}
   const urgentes=meusBriefings().filter(x=>x.status==='urgente'&&!x.done);
   const atrasadas=meusBriefings().filter(x=>!x.done&&x.s!==SEMANAS[0]);
-  const snap={
-    tipo:'snapshot',
-    semana:SEMANAS[0],
-    data:new Date().toLocaleDateString('pt-BR'),
-    briefing_aberto:meusBriefings().filter(x=>!x.done).length,
-    briefing_concluido:meusBriefings().filter(x=>x.done).length,
-    briefing_urgente:urgentes.length,
-    briefing_atrasado:atrasadas.length,
-    alertas_criticos:AL.filter(x=>x.nivel==='v').length,
-    alertas_atencao:AL.filter(x=>x.nivel==='a').length,
-    alertas_monitorar:AL.filter(x=>x.nivel==='b').length,
-    followup_pendente:grupoPorResp().filter(p=>!sent[p.nome]).length,
-    pauta_itens:PA.length,
-    fechamento_pendencias:F.filter(x=>x.tipo==='p'&&!x.done).length,
-    fechamento_decisoes:F.filter(x=>x.tipo==='d').length,
-    demandas_time_abertas:D.filter(x=>!x.done).length,
-    demandas_time_concluidas:D.filter(x=>x.done).length,
-    // Arrays completos para o relatório
-    briefing:meusBriefings().filter(x=>!x.done).map(x=>({titulo:x.title,area:x.area,status:x.status,semana:x.s,nota:x.nota||''})),
+  const snap={tipo:'snapshot',semana:SEMANAS[0],data:new Date().toLocaleDateString('pt-BR'),
+    briefing_aberto:meusBriefings().filter(x=>!x.done).length,briefing_concluido:meusBriefings().filter(x=>x.done).length,
+    briefing_urgente:urgentes.length,briefing_atrasado:atrasadas.length,
+    alertas_criticos:AL.filter(x=>x.nivel==='v').length,alertas_atencao:AL.filter(x=>x.nivel==='a').length,alertas_monitorar:AL.filter(x=>x.nivel==='b').length,
+    followup_pendente:grupoPorResp().filter(p=>!sent[p.nome]).length,pauta_itens:PA.length,
+    fechamento_pendencias:F.filter(x=>x.tipo==='p'&&!x.done).length,fechamento_decisoes:F.filter(x=>x.tipo==='d').length,
+    demandas_time_abertas:D.filter(x=>!x.done).length,demandas_time_concluidas:D.filter(x=>x.done).length,
+    briefing:meusBriefings().filter(x=>!x.done).map(x=>({titulo:x.title,area:x.area,status:x.status,semana:x.s,nota:x.nota||'',prazo:x.prazo||''})),
     alertas:AL.map(x=>({nivel:x.nivel,titulo:x.title,desc:x.desc,acao:x.acao})),
     pauta:PA.map(x=>({area:x.area,lider:x.lider,perg:x.perg,kpi:x.kpi,dec:x.dec})),
     pendencias:F.filter(x=>x.tipo==='p'&&!x.done).map(x=>({texto:x.texto,resp:x.resp,prazo:x.prazo})),
@@ -353,15 +507,8 @@ function enviarSnapshot(){
     itens_atrasados:atrasadas.map(x=>({titulo:x.title,semana:x.s,status:x.status,area:x.area}))
   };
   fetch(APPS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(snap)})
-    .then(()=>{
-      showToast('✓ Snapshot enviado para o relatório!');
-      track({tipo:'evento',evento:'enviou_snapshot',descricao:`Snapshot da semana ${SEMANAS[0]} enviado`});
-      if(btn){btn.disabled=false;btn.textContent='📸 Enviar snapshot da semana';}
-    })
-    .catch(()=>{
-      showToast('✓ Snapshot enviado!');
-      if(btn){btn.disabled=false;btn.textContent='📸 Enviar snapshot da semana';}
-    });
+    .then(()=>{showToast('✓ Snapshot enviado!');track({tipo:'evento',evento:'enviou_snapshot',descricao:`Snapshot ${SEMANAS[0]} enviado`});if(btn){btn.disabled=false;btn.textContent='📸 Enviar snapshot da semana';}})
+    .catch(()=>{showToast('✓ Snapshot enviado!');if(btn){btn.disabled=false;btn.textContent='📸 Enviar snapshot da semana';}});
 }
 
 // ── CAMPOS LIVRES ──
@@ -377,12 +524,16 @@ function getComboVal(id,type){const sId=type==='area'?`csel-${id}`:`ssel-${id}`;
 
 // ── NAV ──
 function buildNav(){
-  const tabs=[{id:'briefing',label:'Briefing'},{id:'pauta',label:'Pauta'},{id:'alertas',label:'Alertas'},{id:'fechamento',label:'Fechamento'},{id:'followup',label:'Follow-up'},{id:'reuniao',label:'+ Reunião'},{id:'historico',label:'📂 Histórico'},{id:'exportar',label:'↕ Estado'}];
+  const tabs=[
+    {id:'briefing',label:'Briefing'},{id:'pauta',label:'Pauta'},{id:'alertas',label:'Alertas'},
+    {id:'fechamento',label:'Fechamento'},{id:'followup',label:'Follow-up'},{id:'pulso',label:'📊 Pulso'},
+    {id:'reuniao',label:'+ Reunião'},{id:'historico',label:'📂 Histórico'},{id:'exportar',label:'↕ Estado'}
+  ];
   document.getElementById('nav-bar').innerHTML=tabs.map(t=>`<button class="nav-btn${t.id==='briefing'?' on':''}" onclick="goTab('${t.id}')" id="nb-${t.id}">${t.label}<span class="nav-ct" id="ct-${t.id}"></span></button>`).join('');
 }
 function goTab(t){
   curTab=t;
-  ['briefing','pauta','alertas','fechamento','followup','reuniao','historico','exportar'].forEach(s=>{
+  ['briefing','pauta','alertas','fechamento','followup','pulso','reuniao','historico','exportar'].forEach(s=>{
     document.getElementById('s-'+s).className='sec'+(s===t?' on':'');
     const nb=document.getElementById('nb-'+s);if(nb)nb.className='nav-btn'+(s===t?' on':'');
   });
@@ -395,19 +546,24 @@ function grupoPorResp(){
   const m={};D.filter(x=>!x.done).forEach(x=>{const nome=x.resp.split(/[,\/]/)[0].trim();if(!m[nome])m[nome]={nome,cor:corP(nome),items:[]};m[nome].items.push(x);});
   return Object.values(m);
 }
-function wppMsg(nome,items){const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='Contínuo'?' ('+x.prazo+')':''}`).join('\n');return `Oi, ${nome}! Passando pra deixar no radar alguns pontos em aberto:\n\n${its}\n\nQualquer coisa me chama. Obrigado!`;}
-function emailMsg(nome,items){const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='Contínuo'?' — prazo: '+x.prazo:''}`).join('\n');return `Oi, ${nome},\n\nPassando para um alinhamento rápido sobre pontos em aberto:\n\n${its}\n\nSe precisar de apoio ou tiver bloqueio, me avisa.\n\nObrigado!\n${ME}`;}
+function wppMsg(nome,items){const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='A definir'?' ('+formatPrazo(x.prazo)+')':''}`).join('\n');return `Oi, ${nome}! Passando pra deixar no radar alguns pontos em aberto:\n\n${its}\n\nQualquer coisa me chama. Obrigado!`;}
+function emailMsg(nome,items){const its=items.map((x,i)=>`${i+1}. ${x.desc}${x.prazo&&x.prazo!=='A definir'?' — prazo: '+formatPrazo(x.prazo):''}`).join('\n');return `Oi, ${nome},\n\nPassando para um alinhamento rápido sobre pontos em aberto:\n\n${its}\n\nSe precisar de apoio ou tiver bloqueio, me avisa.\n\nObrigado!\n${ME}`;}
 function cpText(elId,btnId){const el=document.getElementById(elId);const text=el.tagName==='TEXTAREA'?el.value:el.textContent;navigator.clipboard.writeText(text).then(()=>{const btn=document.getElementById(btnId);if(!btn)return;const orig=btn.innerHTML;btn.innerHTML='✓ Copiado!';btn.classList.add('ok');setTimeout(()=>{btn.innerHTML=orig;btn.classList.remove('ok');},2000);});}
-function trocarUsuario(){ME="";editing=null;openC=new Set();openPerson=new Set();msgTab={};sent={};previewItems=[];document.getElementById('setup-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('user-select').value='';document.getElementById('pwd-section').style.display='none';document.getElementById('pwd-input').value='';document.getElementById('setup-error').classList.remove('show');}
+function trocarUsuario(){ME="";editing=null;editingFU=null;openC=new Set();openPerson=new Set();msgTab={};sent={};previewItems=[];document.getElementById('setup-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('fab-btn').style.display='none';document.getElementById('user-select').value='';document.getElementById('pwd-section').style.display='none';document.getElementById('pwd-input').value='';document.getElementById('setup-error').classList.remove('show');}
 
 // ── KPIs ──
 function rK(){
   const mb=meusBriefings();
+  const atrasados=mb.filter(x=>!x.done&&isOverdue(x.prazo)).length + D.filter(x=>!x.done&&isOverdue(x.prazo)).length;
   document.getElementById('k1').textContent=mb.filter(x=>x.status==='urgente'&&!x.done).length;
   document.getElementById('k2').textContent=mb.filter(x=>x.s===SEMANAS[0]&&!x.done).length;
+  document.getElementById('k6').textContent=atrasados;
   document.getElementById('k3').textContent=AL.filter(x=>x.nivel==='v').length;
   document.getElementById('k4').textContent=mb.filter(x=>x.done).length+F.filter(x=>x.done).length;
   document.getElementById('k5').textContent=grupoPorResp().filter(p=>!sent[p.nome]).length;
+  // Destaque KPI atrasados
+  const kpiAt=document.getElementById('kpi-atrasados');
+  kpiAt.className=atrasados>0?'kpi kpi-alert':'kpi';
   document.getElementById('ct-briefing').textContent=mb.filter(x=>!x.done).length;
   document.getElementById('ct-pauta').textContent=PA.length;
   document.getElementById('ct-alertas').textContent=AL.filter(x=>x.nivel==='v').length;
@@ -415,21 +571,65 @@ function rK(){
   document.getElementById('ct-followup').textContent=grupoPorResp().filter(p=>!sent[p.nome]).length;
   const np=previewItems.length;document.getElementById('ct-reuniao').textContent=np||'';
   const nb=document.getElementById('nb-reuniao');if(nb){if(np)nb.classList.add('nav-new');else nb.classList.remove('nav-new');}
+  // Pulso badge
+  const pAtrasados=mb.filter(x=>!x.done&&isOverdue(x.prazo)).length;
+  document.getElementById('ct-pulso').textContent=pAtrasados>0?pAtrasados:'';
+}
+
+// ── WIP por área ──
+function calcWIP(){
+  const wip={};
+  meusBriefings().filter(x=>!x.done).forEach(x=>{wip[x.area]=(wip[x.area]||0)+1;});
+  return wip;
 }
 
 // ── BRIEFING ──
 function rB(){
   const mb=meusBriefings();
-  let h=`<button class="btn-add" onclick="addB()">＋ Adicionar</button>`;
+  const wip=calcWIP();
+  // WIP bar
+  const wipEntries=Object.entries(wip).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  let wipHtml='';
+  if(wipEntries.length){
+    wipHtml=`<div class="wip-bar"><span class="wip-title">WIP por área — limite ${WIP_LIMIT} por área</span>${wipEntries.map(([a,n])=>`<span class="wip-item${n>=WIP_LIMIT?' wip-high':''}">${a} <strong>${n}</strong></span>`).join('')}</div>`;
+  }
+  let h=wipHtml+`<button class="btn-add" onclick="addB()">＋ Adicionar</button>`;
   const gr={};SEMANAS.forEach(s=>{gr[s]=[];});mb.forEach(x=>{if(gr[x.s])gr[x.s].push(x);});
+  // Ordena: atrasados primeiro dentro de cada semana
   SEMANAS.forEach(sem=>{
     const its=gr[sem];if(!its||!its.length)return;
+    its.sort((a,b)=>{if(isOverdue(a.prazo)&&!isOverdue(b.prazo))return -1;if(!isOverdue(a.prazo)&&isOverdue(b.prazo))return 1;return 0;});
     h+=`<div class="sec-hdr">📅 Semana de ${sem}</div>`;
     its.forEach(item=>{
+      const od=!item.done&&isOverdue(item.prazo);
+      const td=!item.done&&isDueToday(item.prazo);
       if(editing===item.id){
-        h+=`<div class="card"><span class="lbl">Título</span><textarea class="fa" id="bt-${item.id}">${item.title}</textarea><div class="row2"><div><span class="lbl">Semana</span><select class="fi" id="bs-${item.id}">${SEMANAS.map(s=>`<option value="${s}"${s===item.s?' selected':''}>${s}</option>`).join('')}</select></div><div><span class="lbl">Status</span>${comboStatus(item.id+'b',item.status)}</div></div><div><span class="lbl">Área</span>${comboArea(item.id+'b',item.area)}</div><span class="lbl">Nota / contexto</span><textarea class="fa" id="bn-${item.id}">${item.nota||''}</textarea><div class="btn-row"><button class="btn-primary" onclick="saveB('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delB('${item.id}')">🗑 Remover</button></div></div>`;
+        h+=`<div class="card"><span class="lbl">Título</span><textarea class="fa" id="bt-${item.id}">${item.title}</textarea>
+        <div class="row3">
+          <div><span class="lbl">Semana</span><select class="fi" id="bs-${item.id}">${SEMANAS.map(s=>`<option value="${s}"${s===item.s?' selected':''}>${s}</option>`).join('')}</select></div>
+          <div><span class="lbl">Status</span>${comboStatus(item.id+'b',item.status)}</div>
+          <div><span class="lbl">Prazo</span><input type="date" class="fi" id="bp-${item.id}" value="${item.prazo&&/^\d{4}-\d{2}-\d{2}$/.test(item.prazo)?item.prazo:''}"></div>
+        </div>
+        <div><span class="lbl">Área</span>${comboArea(item.id+'b',item.area)}</div>
+        <span class="lbl">Nota / contexto</span><textarea class="fa" id="bn-${item.id}">${item.nota||''}</textarea>
+        <div class="btn-row"><button class="btn-primary" onclick="saveB('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delB('${item.id}')">🗑 Remover</button></div></div>`;
       }else{
-        h+=`<div class="card" style="${item.done?'opacity:.5':''}"><div class="card-top"><input type="checkbox" class="check" ${item.done?'checked':''} onchange="togB('${item.id}')"><span class="card-title ${item.done?'done-t':''}" onclick="togC('${item.id}')">${item.title}</span><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button></div><div class="card-meta"><span class="week-tag">${sem}</span><span class="area-tag">${item.area}</span><span class="pill ${pillClass(item.status)}">${statusLabel(item.status)}</span></div>${openC.has(item.id)&&item.nota?`<div class="card-body open"><div style="font-size:13px;color:var(--text-2);line-height:1.6">${item.nota}</div></div>`:''}</div>`;
+        h+=`<div class="card${od?' overdue':''}" style="${item.done?'opacity:.5':''}">
+          <div class="card-top">
+            <input type="checkbox" class="check" ${item.done?'checked':''} onchange="togB('${item.id}')">
+            <span class="card-title ${item.done?'done-t':''}" onclick="togC('${item.id}')">${item.title}</span>
+            <button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button>
+          </div>
+          <div class="card-meta">
+            <span class="week-tag">${sem}</span>
+            <span class="area-tag">${item.area}</span>
+            <span class="pill ${pillClass(item.status)}">${statusLabel(item.status)}</span>
+            ${item.prazo&&item.prazo!=='A definir'?`<span style="font-size:11px;color:${od?'var(--red)':td?'var(--amber)':'var(--text-3)'};font-weight:${od||td?'600':'400'}">📅 ${formatPrazo(item.prazo)}</span>`:''}
+            ${od?`<span class="overdue-tag">Atrasado</span>`:''}
+            ${td&&!od?`<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--amber-bg);color:var(--amber)">Hoje</span>`:''}
+          </div>
+          ${openC.has(item.id)&&item.nota?`<div class="card-body open"><div style="font-size:13px;color:var(--text-2);line-height:1.6">${item.nota}</div></div>`:''}
+        </div>`;
       }
     });
   });
@@ -475,9 +675,10 @@ function rFc(){
     if(!its.length)h+=`<div style="font-size:13px;color:var(--text-3);padding:4px 0">Nenhum item.</div>`;
     its.forEach(item=>{
       if(editing===item.id){
-        h+=`<div style="padding:8px 0;border-bottom:1px solid var(--border-light)"><div class="row2"><div><span class="lbl">Tipo</span><select class="fi" id="ft-${item.id}" style="width:auto"><option value="d"${item.tipo==='d'?' selected':''}>Decisão</option><option value="p"${item.tipo==='p'?' selected':''}>Pendência</option></select></div><div><span class="lbl">Prazo</span><input class="fi" id="fp-${item.id}" value="${item.prazo}"></div></div><span class="lbl">Descrição</span><textarea class="fa" id="fd-${item.id}">${item.texto}</textarea><span class="lbl">Responsável</span><input class="fi" id="fr-${item.id}" value="${item.resp}"><div class="btn-row"><button class="btn-primary" onclick="saveF('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delF('${item.id}')">🗑 Remover</button></div></div>`;
+        h+=`<div style="padding:8px 0;border-bottom:1px solid var(--border-light)"><div class="row3"><div><span class="lbl">Tipo</span><select class="fi" id="ft-${item.id}" style="width:auto"><option value="d"${item.tipo==='d'?' selected':''}>Decisão</option><option value="p"${item.tipo==='p'?' selected':''}>Pendência</option></select></div><div><span class="lbl">Responsável</span><input class="fi" id="fr-${item.id}" value="${item.resp}"></div><div><span class="lbl">Prazo</span><input type="date" class="fi" id="fp-${item.id}" value="${item.prazo&&/^\d{4}-\d{2}-\d{2}$/.test(item.prazo)?item.prazo:''}"></div></div><span class="lbl">Descrição</span><textarea class="fa" id="fd-${item.id}">${item.texto}</textarea><div class="btn-row"><button class="btn-primary" onclick="saveF('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delF('${item.id}')">🗑 Remover</button></div></div>`;
       }else{
-        h+=`<div class="fec-item" style="${item.done?'opacity:.5':''}"><input type="checkbox" class="check" ${item.done?'checked':''} onchange="togFI('${item.id}')"><div style="flex:1"><div style="font-size:13px;${item.done?'text-decoration:line-through;color:var(--text-3)':''}">${item.texto}</div><div style="font-size:12px;color:var(--text-3);margin-top:3px">${item.resp} · ${item.prazo}</div></div><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button><button class="icon-btn" onclick="delF('${item.id}')">🗑</button></div>`;
+        const od=!item.done&&item.tipo==='p'&&isOverdue(item.prazo);
+        h+=`<div class="fec-item" style="${item.done?'opacity:.5':''}"><input type="checkbox" class="check" ${item.done?'checked':''} onchange="togFI('${item.id}')"><div style="flex:1"><div style="font-size:13px;${item.done?'text-decoration:line-through;color:var(--text-3)':''}">${item.texto}${od?` <span class="overdue-tag">Atrasado</span>`:''}</div><div style="font-size:12px;color:var(--text-3);margin-top:3px">${item.resp} · ${formatPrazo(item.prazo)}</div></div><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button><button class="icon-btn" onclick="delF('${item.id}')">🗑</button></div>`;
       }
     });
     h+=`</div>`;
@@ -486,211 +687,158 @@ function rFc(){
 }
 
 // ── FOLLOW-UP ──
+function addFU(){editingFU='new';rFU();setTimeout(()=>{const el=document.getElementById('fu-new-form');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},50);}
+function saveFU(){
+  const resp=(document.getElementById('fu-resp')||{}).value||'';
+  const desc=(document.getElementById('fu-desc')||{}).value||'';
+  const prazo=(document.getElementById('fu-prazo')||{}).value||'';
+  const area=(document.getElementById('fu-area')||{}).value||'A definir';
+  if(!resp.trim()||!desc.trim()){showToast('Responsável e demanda são obrigatórios.');return;}
+  const id='d'+uid();
+  D.push({id,resp:resp.trim(),area,desc:desc.trim(),prazo,status:'pendente',done:false,isNew:true});
+  track({tipo:'demanda',acao:'criou_manual_fu',id,titulo:desc.trim(),area,resp:resp.trim(),prazo});
+  editingFU=null;ra();
+}
+function cancelFU(){editingFU=null;rFU();}
+
 function rFU(){
   const grupos=grupoPorResp();
-  let h=`<div style="font-size:13px;color:var(--text-2);margin-bottom:12px;line-height:1.6">Gerado automaticamente das demandas. Toda nova demanda com responsável externo aparece aqui com a mensagem pronta.</div>`;
-  if(!grupos.length){h+=`<div style="font-size:13px;color:var(--text-3);padding:2rem 0;text-align:center">Nenhuma demanda pendente para o time.</div>`;}
-  else{grupos.forEach((p,i)=>{
-    const isOpen=openPerson.has(i),tab=msgTab[i]||'wpp',isSent=sent[p.nome],hasNew=p.items.some(x=>x.isNew);
-    const msgId=`fmsg-${i}`,cpId=`fcp-${i}`;const msg=tab==='wpp'?wppMsg(p.nome,p.items):emailMsg(p.nome,p.items);
-    h+=`<div class="person-card" style="${isSent?'opacity:.55':''}"><div class="person-hdr" onclick="togPerson(${i})"><div class="avatar" style="background:${p.cor}">${p.nome.slice(0,2).toUpperCase()}</div><div style="font-size:13px;font-weight:500;flex:1">${p.nome}</div><span class="pill pp" style="margin-right:4px">${p.items.length} pend.</span>${hasNew?`<span class="new-tag">novo</span>`:''}${isSent?`<span class="pill pk" style="margin-right:4px">Enviado</span>`:''}</div>${isOpen?`<div class="person-body open"><div style="margin-bottom:10px">${p.items.map(x=>`<div class="pi"><div class="pdot"></div><div style="flex:1"><div>${x.desc}${x.isNew?` <span class="new-tag">novo</span>`:''}</div><div style="font-size:11px;color:var(--text-3);margin-top:2px">${x.area} · ${x.prazo}</div></div><button class="icon-btn" onclick="event.stopPropagation();doneD('${x.id}')">✓</button></div>`).join('')}</div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px">Mensagem pronta</div><div class="msg-tabs"><button class="msg-tab ${tab==='wpp'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='wpp';rFU()">💬 WhatsApp</button><button class="msg-tab ${tab==='email'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='email';rFU()">✉ E-mail</button></div><textarea class="msg-text" id="${msgId}">${msg}</textarea><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px"><button class="btn-copy" id="${cpId}" onclick="event.stopPropagation();cpText('${msgId}','${cpId}')">⎘ Copiar</button><button class="sent-btn ${isSent?'done':''}" onclick="event.stopPropagation();enviarFollowup('${p.nome}',${i})">${isSent?'✓ Enviado':'Marcar como enviado'}</button></div></div>`:''}</div>`;
-  });}
-  document.getElementById('s-followup').innerHTML=h;
-}
-function enviarFollowup(nome,i){sent[nome]=!sent[nome];if(sent[nome])track({tipo:'evento',evento:'enviou_followup',descricao:`Follow-up enviado para ${nome}`});ra();}
-
-// ── PROCESSADOR ──
-function rR(){
-  const promptText=`Processe as notas abaixo. Retorne APENAS um bloco de código JSON (\`\`\`json) com um objeto com 4 arrays.
-
-MAPEAMENTO DE ÁREAS E RESPONSÁVEIS DA ROAD:
-- P&C / RH / Pessoas = Amanda (Amandinha)
-- Financeiro = Thay (Tai, Thayná)
-- Comercial = Miguel
-- Tech / Ferramentas / Administrativo / Logística = Ju (Juliana)
-- CEO / Presidência / Estratégia = Sabrina (Bina, Sab)
-- Liderança (decisões gerais sem área específica) = Vinicius (Vini)
-- Núcleo B = Lucas Holanda
-- Núcleo A = Erick (Eric)
-- Núcleo CBF = Bruna
-- CRM = Baldner
-- Criação / Design / Branding = Jéssica (Jess, Jessica)
-- Performance / Mídia / Tráfego = Darlan
-- Squad 1 (Núcleo A) = Carla
-- Squad 2 (Núcleo A) = Iza
-- Squad 3 (Núcleo A) = Gi
-- Squad 4 (Núcleo B) = Davila (Davs)
-- Squad 5 (Núcleo B) = Leticia (Leti)
-- Operações = André
-
-REGRAS:
-- demandas: só itens com responsável nomeado + verbo de ação. Ignore contextos sem dono
-- pauta: tópicos que precisam de decisão ou alinhamento na próxima reunião
-- alertas: nivel "v"=Crítico, "a"=Atenção, "b"=Monitorar. Só riscos reais
-- fechamento: tipo "d"=Decisão já tomada, "p"=Pendência em aberto
-
-Formato exato:
-{
-  "demandas": [{"resp":"Nome","desc":"Ação clara","prazo":"Prazo ou A definir","area":"Área conforme mapeamento"}],
-  "pauta": [{"area":"Área","lider":"Nome do líder","perg":"Pergunta-chave","kpi":"KPI a apresentar","dec":"Decisão esperada"}],
-  "alertas": [{"nivel":"v","title":"Título","desc":"Descrição do risco","acao":"Ação recomendada"}],
-  "fechamento": [{"tipo":"d","texto":"Descrição","resp":"Responsável","prazo":"Prazo"}]
-}
-
-NOTAS:`;
-  let prev='';
-  if(previewItems.length){prev=`<hr class="div"><div style="font-size:14px;font-weight:500;margin-bottom:4px">Revise antes de confirmar</div><div style="font-size:12px;color:var(--text-2);margin-bottom:12px">Borda <span style="color:var(--week);font-weight:600">roxa</span> = você · <span style="color:#D4890A;font-weight:600">laranja</span> = outro</div><div id="prev-list"></div><div class="confirm-bar"><button class="btn-primary" onclick="confirmar()">✓ Confirmar demandas</button><button class="btn-sm" onclick="previewItems=[];rR();rK()">Descartar</button><span style="font-size:12px;color:var(--text-3)">${previewItems.length} demanda${previewItems.length!==1?'s':''}</span></div>`;}
-  document.getElementById('s-reuniao').innerHTML=`<div class="proc-box"><div style="font-size:15px;font-weight:600;margin-bottom:4px">✦ Processador de reunião</div><div style="font-size:12px;color:var(--text-2);margin-bottom:1.25rem;line-height:1.6">Copie o prompt → envie no chat com as notas → cole o JSON → confirme os cards.</div><div class="proc-step"><div class="step-num">1</div><div style="flex:1"><div class="step-label">Copie o prompt e envie no chat com as notas</div><textarea class="prompt-ta" rows="5" id="prompt-ta" readonly>${promptText}</textarea><button class="btn-copy" id="cp-prompt" onclick="cpText('prompt-ta','cp-prompt')" style="margin-top:7px">⎘ Copiar prompt</button></div></div><div class="proc-step"><div class="step-num">2</div><div style="flex:1"><div class="step-label">Cole o JSON aqui</div><div class="step-sub">Aceita com ou sem crases</div><textarea class="import-ta" id="json-in" placeholder="Cole aqui o que o Claude devolveu..."></textarea><div class="err-box" id="json-err">JSON inválido. Verifique se copiou o bloco completo.</div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn-primary" onclick="importJSON()">↓ Carregar demandas</button><button class="btn-sm" onclick="addPrevManual()">＋ Adicionar manualmente</button></div></div></div></div>${prev}`;
-  if(previewItems.length)renderPreview();
-}
-
-function importJSON(){
-  const raw=document.getElementById('json-in').value.trim();
-  const err=document.getElementById('json-err');err.classList.remove('show');
-  const cleaned=raw.replace(/```json|```/gi,'').trim();
-  const match=cleaned.match(/[\[{][\s\S]*/);if(!match){err.classList.add('show');return;}
-  try{
-    const parsed=JSON.parse(match[0]);
-    if(!Array.isArray(parsed)&&typeof parsed==='object'){
-      if(parsed.demandas)previewItems=parsed.demandas.map(x=>({resp:String(x.resp||''),desc:String(x.desc||''),prazo:String(x.prazo||'A definir'),area:String(x.area||'A definir')}));
-      if(parsed.pauta)parsed.pauta.forEach(x=>{PA.push({id:'pa'+uid(),area:String(x.area||''),lider:String(x.lider||''),perg:String(x.perg||''),kpi:String(x.kpi||''),dec:String(x.dec||'')});});
-      if(parsed.alertas)parsed.alertas.forEach(x=>{AL.push({id:'al'+uid(),nivel:String(x.nivel||'b'),title:String(x.title||''),desc:String(x.desc||''),acao:String(x.acao||'')});track({tipo:'alerta',acao:'criou',nivel:x.nivel||'b',titulo:x.title||'',desc:x.desc||'',acao_rec:x.acao||''});});
-      if(parsed.fechamento)parsed.fechamento.forEach(x=>{F.push({id:'f'+uid(),tipo:String(x.tipo||'p'),texto:String(x.texto||''),resp:String(x.resp||''),prazo:String(x.prazo||''),done:false});});
-      document.getElementById('json-in').value='';
-      track({tipo:'evento',evento:'processou_reuniao',descricao:'Demandas importadas da reunião',detalhe:`${previewItems.length} demandas`});
-      rR();rK();return;
-    }
-    if(Array.isArray(parsed)){previewItems=parsed.map(x=>({resp:String(x.resp||''),desc:String(x.desc||''),prazo:String(x.prazo||'A definir'),area:String(x.area||'A definir')}));document.getElementById('json-in').value='';rR();rK();return;}
-    throw new Error();
-  }catch(e){err.classList.add('show');}
-}
-function addPrevManual(){previewItems.push({resp:'',desc:'',prazo:'',area:'P&C'});rR();}
-function renderPreview(){
-  const list=document.getElementById('prev-list');if(!list)return;list.innerHTML='';
-  previewItems.forEach((x,i)=>{
-    const div=document.createElement('div');div.className='preview-item '+(isMe(x.resp)?'meu':'outro');
-    const grid=document.createElement('div');grid.className='row3';
-    const mkInp=(lbl,val,cb)=>{const w=document.createElement('div');const l=document.createElement('span');l.className='lbl';l.textContent=lbl;const inp=document.createElement('input');inp.className='fi';inp.value=val;inp.addEventListener('input',e=>{cb(e.target.value);});w.appendChild(l);w.appendChild(inp);return w;};
-    grid.appendChild(mkInp('Responsável',x.resp,v=>{previewItems[i].resp=v;div.className='preview-item '+(isMe(v)?'meu':'outro');}));
-    grid.appendChild(mkInp('Prazo',x.prazo,v=>{previewItems[i].prazo=v;}));
-    const c3=document.createElement('div');const l3=document.createElement('span');l3.className='lbl';l3.textContent='Área';const sel=document.createElement('select');sel.className='fi';allAreas().forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;if(a===x.area)o.selected=true;sel.appendChild(o);});sel.addEventListener('change',e=>{previewItems[i].area=e.target.value;});c3.appendChild(l3);c3.appendChild(sel);grid.appendChild(c3);
-    const dw=document.createElement('div');const dl=document.createElement('span');dl.className='lbl';dl.textContent='Demanda';const ta=document.createElement('textarea');ta.className='fa';ta.value=x.desc;ta.style.minHeight='40px';ta.addEventListener('input',e=>{previewItems[i].desc=e.target.value;});dw.appendChild(dl);dw.appendChild(ta);
-    const br=document.createElement('div');br.style.cssText='display:flex;justify-content:flex-end;margin-top:6px';const bd=document.createElement('button');bd.className='btn-del';bd.textContent='🗑 Remover';bd.addEventListener('click',()=>{previewItems.splice(i,1);rR();rK();});br.appendChild(bd);
-    div.appendChild(grid);div.appendChild(dw);div.appendChild(br);list.appendChild(div);
-  });
-}
-function confirmar(){
-  const meus=previewItems.filter(x=>isMe(x.resp)),outros=previewItems.filter(x=>!isMe(x.resp));
-  meus.forEach(x=>{const id='b'+uid();B.push({id,s:SEMANAS[0],title:x.desc,area:x.area,status:"pendente",nota:`Prazo: ${x.prazo}`,done:false,owner:ME});track({tipo:'demanda',acao:'criou',id,titulo:x.desc,area:x.area,status:'pendente',semana:SEMANAS[0],prazo:x.prazo});});
-  outros.forEach(x=>{const id='d'+uid();D.push({id,resp:x.resp,area:x.area,desc:x.desc,prazo:x.prazo,status:"pendente",done:false,isNew:true});track({tipo:'demanda',acao:'criou',id,titulo:x.desc,area:x.area,resp:x.resp,prazo:x.prazo});});
-  previewItems=[];ra();goTab(outros.length?'followup':'briefing');
-}
-
-// ── HISTÓRICO ──
-function rH(){
-  const concB=B.filter(x=>x.done),concD=D.filter(x=>x.done),concF=F.filter(x=>x.done);
-  const total=concB.length+concD.length+concF.length;
-  let h=`<div style="font-size:13px;color:var(--text-2);margin-bottom:16px;line-height:1.6">Registro de tudo que foi concluído. Total: <strong>${total} itens</strong>.</div>`;
-  if(!total){h+=`<div style="font-size:13px;color:var(--text-3);padding:2rem 0;text-align:center">Nenhum item concluído ainda.</div>`;document.getElementById('s-historico').innerHTML=h;return;}
-  if(concB.length){
-    const gr={};concB.forEach(x=>{if(!gr[x.s])gr[x.s]=[];gr[x.s].push(x);});
-    h+=`<div class="sec-hdr">Minhas demandas concluídas</div>`;
-    Object.keys(gr).forEach(sem=>{
-      h+=`<div style="font-size:11px;font-weight:600;color:var(--week);margin:10px 0 5px;text-transform:uppercase;letter-spacing:.05em">Semana de ${sem}</div>`;
-      gr[sem].forEach(item=>{h+=`<div class="card" style="opacity:.7;margin-bottom:6px"><div class="card-top"><span style="font-size:13px;color:var(--text-3)">✓</span><span class="card-title done-t" style="flex:1;margin-left:8px">${item.title}</span></div><div class="card-meta"><span class="week-tag">${sem}</span><span class="area-tag">${item.area}</span><span class="pill pk">Concluído</span></div></div>`;});
+  let h=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+    <div style="font-size:13px;color:var(--text-2);line-height:1.6">Gerado automaticamente das demandas. Use <strong>＋ Adicionar item</strong> para inserir pontos sem passar pelo Processador.</div>
+    <button class="btn-add" style="margin-bottom:0;flex-shrink:0" onclick="addFU()">＋ Adicionar item</button>
+  </div>`;
+  if(editingFU==='new'){
+    h+=`<div class="fu-edit-card" id="fu-new-form">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--amber)">＋ Nova demanda para o time</div>
+      <div class="row2">
+        <div><span class="lbl">Responsável</span>
+          <select class="fi" id="fu-resp">
+            <option value="">Selecione...</option>
+            ${PESSOAS_DEFAULT.filter(p=>p.toLowerCase()!==ME.toLowerCase()).map(p=>`<option value="${p}">${p}</option>`).join('')}
+          </select>
+        </div>
+        <div><span class="lbl">Prazo</span><input type="date" class="fi" id="fu-prazo" value="${prazoDefault(7)}"></div>
+      </div>
+      <span class="lbl">Área</span>
+      <select class="fi" id="fu-area">${allAreas().map(a=>`<option value="${a}">${a}</option>`).join('')}</select>
+      <span class="lbl">Demanda</span>
+      <textarea class="fa" id="fu-desc" placeholder="Descreva a ação esperada..." style="min-height:56px"></textarea>
+      <div class="btn-row"><button class="btn-primary" onclick="saveFU()">✓ Salvar</button><button class="btn-sm" onclick="cancelFU()">Cancelar</button></div>
+    </div>`;
+  }
+  if(!grupos.length&&editingFU!=='new'){
+    h+=`<div style="font-size:13px;color:var(--text-3);padding:2rem 0;text-align:center">Nenhuma demanda pendente para o time.</div>`;
+  }else{
+    grupos.forEach((p,i)=>{
+      const isOpen=openPerson.has(i),tab=msgTab[i]||'wpp',isSent=sent[p.nome],hasNew=p.items.some(x=>x.isNew);
+      const hasOverdue=p.items.some(x=>isOverdue(x.prazo));
+      const msgId=`fmsg-${i}`,cpId=`fcp-${i}`;const msg=tab==='wpp'?wppMsg(p.nome,p.items):emailMsg(p.nome,p.items);
+      h+=`<div class="person-card" style="${isSent?'opacity:.55':''}">
+        <div class="person-hdr" onclick="togPerson(${i})">
+          <div class="avatar" style="background:${p.cor}">${p.nome.slice(0,2).toUpperCase()}</div>
+          <div style="font-size:13px;font-weight:500;flex:1">${p.nome}</div>
+          <span class="pill pp" style="margin-right:4px">${p.items.length} pend.</span>
+          ${hasOverdue?`<span class="overdue-tag" style="margin-right:4px">Atrasado</span>`:''}
+          ${hasNew?`<span class="new-tag">novo</span>`:''}
+          ${isSent?`<span class="pill pk" style="margin-right:4px">Enviado</span>`:''}
+        </div>
+        ${isOpen?`<div class="person-body open">
+          <div style="margin-bottom:10px">${p.items.map(x=>{
+            const od=isOverdue(x.prazo);
+            return `<div class="pi"><div class="pdot" style="${od?'background:var(--red)':''}"></div>
+              <div style="flex:1">
+                <div>${x.desc}${x.isNew?` <span class="new-tag">novo</span>`:''}${od?` <span class="overdue-tag">Atrasado</span>`:''}</div>
+                <div style="font-size:11px;color:${od?'var(--red)':'var(--text-3)'};margin-top:2px;font-weight:${od?'600':'400'}">${x.area} · ${formatPrazo(x.prazo)}</div>
+              </div>
+              <button class="icon-btn" onclick="event.stopPropagation();doneD('${x.id}')">✓</button>
+            </div>`;
+          }).join('')}</div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px">Mensagem pronta</div>
+          <div class="msg-tabs">
+            <button class="msg-tab ${tab==='wpp'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='wpp';rFU()">💬 WhatsApp</button>
+            <button class="msg-tab ${tab==='email'?'on':''}" onclick="event.stopPropagation();msgTab[${i}]='email';rFU()">✉ E-mail</button>
+          </div>
+          <textarea class="msg-text" id="${msgId}">${msg}</textarea>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">
+            <button class="btn-copy" id="${cpId}" onclick="event.stopPropagation();cpText('${msgId}','${cpId}')">⎘ Copiar</button>
+            <button class="sent-btn ${isSent?'done':''}" onclick="event.stopPropagation();enviarFollowup('${p.nome}',${i})">${isSent?'✓ Enviado':'Marcar como enviado'}</button>
+          </div>
+        </div>`:''}
+      </div>`;
     });
   }
-  if(concF.length){h+=`<div class="sec-hdr" style="margin-top:16px">Fechamentos concluídos</div>`;concF.forEach(item=>{h+=`<div class="card" style="opacity:.7;margin-bottom:6px"><div class="card-top"><span style="font-size:13px;color:var(--text-3)">✓</span><span style="font-size:13px;flex:1;margin-left:8px;text-decoration:line-through;color:var(--text-3)">${item.texto}</span></div><div class="card-meta"><span class="pill ${item.tipo==='d'?'pk':'pm'}">${item.tipo==='d'?'Decisão':'Pendência'}</span><span class="area-tag">${item.resp}</span>${item.prazo?`<span style="font-size:11px;color:var(--text-3)">${item.prazo}</span>`:''}</div></div>`;});}
-  if(concD.length){h+=`<div class="sec-hdr" style="margin-top:16px">Demandas do time concluídas</div>`;concD.forEach(item=>{h+=`<div class="card" style="opacity:.7;margin-bottom:6px"><div class="card-top"><span style="font-size:13px;color:var(--text-3)">✓</span><span style="font-size:13px;flex:1;margin-left:8px;text-decoration:line-through;color:var(--text-3)">${item.desc}</span></div><div class="card-meta"><span class="area-tag">${item.resp}</span><span class="area-tag">${item.area}</span>${item.prazo?`<span style="font-size:11px;color:var(--text-3)">${item.prazo}</span>`:''}<span class="pill pk">Concluído</span></div></div>`;});}
-  document.getElementById('s-historico').innerHTML=h;
+  document.getElementById('s-followup').innerHTML=h;
 }
+function enviarFollowup(nome,i){sent[nome]=!sent[nome];if(sent[nome])track({tipo:'evento',evento:'enviou_followup',descricao:`Follow-up enviado para ${nome}`});rFU();rK();}
 
-// ── EXPORTAR / ESTADO ──
-function rExp(){
-  const estado={exportadoEm:new Date().toLocaleDateString('pt-BR'),usuario:ME,semana:SEMANAS[0],B:B.filter(x=>!x.done),D:D.filter(x=>!x.done),AL,PA,F:F.filter(x=>!x.done)};
-  const json=JSON.stringify(estado,null,2);
-  const prompt=`Estou retomando o painel de gestão da Road.ag.\nUsuário: ${ME} | Semana: ${SEMANAS[0]}\n\nESTADO ATUAL DO PAINEL:\n\`\`\`json\n${json}\n\`\`\`\n\nCom base nisso:\n1. Gere o briefing da semana — o que precisa avançar até segunda\n2. Liste os alertas críticos ativos e o que está em risco\n3. Reconstitua a pauta de liderança com perguntas-chave por área\n4. Mostre as pendências abertas do fechamento com responsável e prazo\n5. Aponte demandas do time com prazo vencido ou próximo do vencimento\n6. Gere os follow-ups pendentes para o time`;
-  document.getElementById('s-exportar').innerHTML=`
-    <div class="snap-box">
-      <div style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px">📸 Snapshot semanal — toda sexta</div>
-      <div style="font-size:12px;color:var(--green);line-height:1.6;margin-bottom:1rem">Envia o estado completo do seu painel para o relatório da Sabrina: briefing, alertas, pauta, pendências e follow-ups. Faça isso toda sexta ao fechar a semana.</div>
-      <button class="btn-snap" id="btn-snap" onclick="enviarSnapshot()">📸 Enviar snapshot da semana</button>
-    </div>
-    <div class="export-box">
-      <div style="font-size:15px;font-weight:600;margin-bottom:4px">⇅ Exportar para nova conversa</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:1.25rem">Use para abrir uma nova semana no Claude sem perder contexto. O prompt já instrui o Claude a reconstituir todas as abas.</div>
-      <div class="proc-step"><div class="step-num">1</div><div style="flex:1"><div class="step-label">Copie e cole numa conversa nova</div><textarea class="prompt-ta" id="exp-prompt" rows="10" readonly>${prompt}</textarea><button class="btn-copy" id="cp-exp" onclick="cpText('exp-prompt','cp-exp')" style="margin-top:7px">⎘ Copiar prompt</button></div></div>
-      <div class="proc-step" style="margin-top:1rem"><div class="step-num">2</div><div style="flex:1"><div class="step-label">Só o JSON — para importar em outro painel</div><textarea class="json-ta" id="exp-json" rows="5" readonly>${json}</textarea><button class="btn-copy" id="cp-json" onclick="cpText('exp-json','cp-json')" style="margin-top:7px">⎘ Copiar JSON</button></div></div>
-    </div>
-    <div class="export-box">
-      <div style="font-size:15px;font-weight:600;margin-bottom:4px">↑ Importar estado</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:10px">Cole aqui um JSON exportado de uma semana anterior.</div>
-      <textarea class="import-ta" id="imp-json" placeholder="Cole o JSON aqui..." style="min-height:80px"></textarea>
-      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn-primary" onclick="importarEstado()">↓ Importar</button>
-        <span style="font-size:12px;color:var(--text-3)">Substitui o estado atual</span>
-      </div>
-    </div>
-    <div class="export-box" style="border-color:var(--green-border)"><div style="font-size:13px;font-weight:600;margin-bottom:4px;color:var(--green)">📊 Snapshot semanal</div><div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:9px">Envia o estado completo do seu painel para o relatório de gestão. Faça isso toda sexta ao fechar a semana.</div><button class="btn-primary" onclick="enviarSnapshot()" style="background:var(--green)">↑ Enviar snapshot da semana</button></div><div class="export-box" style="border-color:var(--red-border)">
-      <div style="font-size:13px;font-weight:600;margin-bottom:4px;color:var(--red)">⚠ Resetar painel</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:9px">Apaga todo o histórico salvo no navegador para o seu usuário.</div>
-      <button class="btn-del" onclick="resetarPainel()" style="margin-left:0">🗑 Apagar histórico</button>
-    </div>`;
+// ── PULSO — integração dados × gestão ──
+// Dados dos dashboards são referenciados como metadados estáticos + lógica de threshold
+// Em uma integração real, esses valores viriam das planilhas via CSV fetch
+// Aqui, os dados são inseridos manualmente pelo usuário ou via importação JSON
+let pulsoData = {
+  saldoAtual: null, // fSaldosBancos
+  receivablesAbertos: null, // fFaturamento
+  margemMedia: null, // fMargem
+  churnMRR: null, // fNMRR
+  newMRR: null,
+  turnoverMensal: null, // fTurnover
+  updatedAt: null
+};
+function loadPulsoFromStorage(){
+  const raw=localStorage.getItem(storKey('pulsoData'));
+  if(raw)try{pulsoData=JSON.parse(raw);}catch(e){}
 }
+function savePulsoData(){localStorage.setItem(storKey('pulsoData'),JSON.stringify(pulsoData));}
 
-function importarEstado(){
-  const raw=document.getElementById('imp-json').value.trim();if(!raw){alert('Cole o JSON antes de importar.');return;}
-  try{const e=JSON.parse(raw.replace(/```json|```/gi,'').trim());if(e.B)B=e.B;if(e.D)D=e.D;if(e.AL)AL=e.AL;if(e.PA)PA=e.PA;if(e.F)F=e.F;salvar();ra();goTab('briefing');showToast('Estado importado!');}catch(err){alert('JSON inválido.');}
-}
+function rPulso(){
+  loadPulsoFromStorage();
+  const mb=meusBriefings();
+  const atrasados=mb.filter(x=>!x.done&&isOverdue(x.prazo));
+  const overdueTime=D.filter(x=>!x.done&&isOverdue(x.prazo));
+  const wip=calcWIP();
+  const wipAlerts=Object.entries(wip).filter(([,n])=>n>=WIP_LIMIT);
 
-// ── INTERAÇÕES ──
-function togC(id){if(openC.has(id))openC.delete(id);else openC.add(id);ra();}
-function togPerson(i){if(openPerson.has(i))openPerson.delete(i);else openPerson.add(i);rFU();}
-function togB(id){const x=B.find(i=>i.id===id);if(!x)return;x.done=!x.done;track({tipo:'demanda',acao:x.done?'concluiu':'reabriu',id:x.id,titulo:x.title,area:x.area,status:x.status,concluido:x.done});ra();}
-function togFI(id){const x=F.find(i=>i.id===id);if(x)x.done=!x.done;ra();}
-function doneD(id){const x=D.find(i=>i.id===id);if(!x)return;x.done=true;x.isNew=false;track({tipo:'demanda',acao:'concluiu',id:x.id,titulo:x.desc,area:x.area,resp:x.resp,concluido:true});ra();}
+  // Insights gerados a partir dos dados do painel
+  const insights=[];
+  if(atrasados.length>0){
+    insights.push({type:'i-red',title:`⚠ ${atrasados.length} demanda${atrasados.length>1?'s':''} atrasada${atrasados.length>1?'s':''} (Briefing)`,desc:atrasados.map(x=>`• ${x.title} (${x.area})`).join('<br>')});
+  }
+  if(overdueTime.length>0){
+    insights.push({type:'i-red',title:`⚠ ${overdueTime.length} demanda${overdueTime.length>1?'s':''} atrasada${overdueTime.length>1?'s':''} do time`,desc:overdueTime.map(x=>`• ${x.desc} → ${x.resp}`).join('<br>')});
+  }
+  if(wipAlerts.length>0){
+    insights.push({type:'i-amber',title:`🟡 Gargalo WIP detectado`,desc:`Áreas com mais de ${WIP_LIMIT} itens simultâneos: ${wipAlerts.map(([a,n])=>`${a} (${n})`).join(', ')}. Considere priorizar ou redistribuir.`});
+  }
+  if(AL.filter(x=>x.nivel==='v').length>0){
+    insights.push({type:'i-red',title:`🔴 ${AL.filter(x=>x.nivel==='v').length} alertas críticos ativos`,desc:AL.filter(x=>x.nivel==='v').map(x=>`• ${x.title}`).join('<br>')});
+  }
+  const semPrazo=mb.filter(x=>!x.done&&(!x.prazo||x.prazo==='A definir'));
+  if(semPrazo.length>0){
+    insights.push({type:'i-amber',title:`📅 ${semPrazo.length} item${semPrazo.length>1?'ns':''} sem prazo definido`,desc:`Metodologia ágil requer prazo em todos os itens. Defina um prazo para: ${semPrazo.slice(0,3).map(x=>x.title).join(', ')}${semPrazo.length>3?'...':''}`});
+  }
 
-// ── CRUD ──
-function addB(){const n={id:'b'+uid(),s:SEMANAS[0],title:"Nova prioridade",area:"Liderança",status:"pendente",nota:"",done:false,owner:ME};B.push(n);editing=n.id;ra();}
-function saveB(id){const x=B.find(i=>i.id===id);const isNew=x.title==='Nova prioridade';x.title=document.getElementById('bt-'+id).value;x.s=document.getElementById('bs-'+id).value;x.status=getComboVal(id+'b','status')||x.status;x.area=getComboVal(id+'b','area')||x.area;x.nota=document.getElementById('bn-'+id).value;if(!allAreas().includes(x.area))customAreas.push(x.area);if(!allStatus().includes(x.status))customStatus.push(x.status);track({tipo:'demanda',acao:isNew?'criou':'editou',id:x.id,titulo:x.title,area:x.area,status:x.status,semana:x.s});editing=null;ra();}
-function delB(id){const x=B.find(i=>i.id===id);if(x)track({tipo:'demanda',acao:'deletou',id:x.id,titulo:x.title});B=B.filter(x=>x.id!==id);editing=null;ra();}
-function addPA(){const n={id:'pa'+uid(),area:"Nova área",lider:"",perg:"",kpi:"",dec:""};PA.push(n);editing=n.id;ra();}
-function savePA(id){const x=PA.find(i=>i.id===id);x.area=document.getElementById('pa-'+id).value;x.lider=document.getElementById('pl-'+id).value;x.perg=document.getElementById('pp-'+id).value;x.kpi=document.getElementById('pk-'+id).value;x.dec=document.getElementById('pd-'+id).value;editing=null;ra();}
-function delPA(id){PA=PA.filter(x=>x.id!==id);editing=null;ra();}
-function addAL(){const n={id:'al'+uid(),nivel:"a",title:"Novo alerta",desc:"",acao:""};AL.push(n);editing=n.id;ra();}
-function saveAL(id){const x=AL.find(i=>i.id===id);x.nivel=document.getElementById('an-'+id).value;x.title=document.getElementById('at-'+id).value;x.desc=document.getElementById('ad-'+id).value;x.acao=document.getElementById('aa-'+id).value;track({tipo:'alerta',acao:'criou/editou',id:x.id,nivel:x.nivel,titulo:x.title,desc:x.desc,acao_rec:x.acao});editing=null;ra();}
-function delAL(id){const x=AL.find(i=>i.id===id);if(x)track({tipo:'alerta',acao:'deletou',id:x.id,titulo:x.title});AL=AL.filter(x=>x.id!==id);editing=null;ra();}
-function addF(){const n={id:'f'+uid(),tipo:"p",texto:"Nova pendência",resp:"",prazo:"",done:false};F.push(n);editing=n.id;ra();}
-function saveF(id){const x=F.find(i=>i.id===id);x.tipo=document.getElementById('ft-'+id).value;x.texto=document.getElementById('fd-'+id).value;x.resp=document.getElementById('fr-'+id).value;x.prazo=document.getElementById('fp-'+id).value;editing=null;ra();}
-function delF(id){F=F.filter(x=>x.id!==id);editing=null;ra();}
+  // Dados dos dashboards (quando informados)
+  const pd=pulsoData;
+  let dashSection='';
+  const hasAnyDash=pd.saldoAtual!==null||pd.margemMedia!==null||pd.churnMRR!==null||pd.newMRR!==null||pd.turnoverMensal!==null;
 
-function enviarSnapshot(){
-  if(!ME) return;
-  const agora = new Date();
-  const payload = {
-    tipo: 'snapshot',
-    usuario: ME,
-    data: agora.toLocaleDateString('pt-BR'),
-    semana: SEMANAS[0],
-    briefing: B.map(x=>({id:x.id,title:x.title,area:x.area,status:x.status,semana:x.s,prazo:x.nota,done:x.done,owner:x.owner})),
-    pauta: PA.map(x=>({area:x.area,lider:x.lider,perg:x.perg,kpi:x.kpi,dec:x.dec})),
-    alertas: AL.map(x=>({nivel:x.nivel,title:x.title,desc:x.desc,acao:x.acao})),
-    fechamento: F.map(x=>({tipo:x.tipo,texto:x.texto,resp:x.resp,prazo:x.prazo,done:x.done})),
-    followup: D.filter(x=>!x.done).map(x=>({resp:x.resp,area:x.area,desc:x.desc,prazo:x.prazo,status:x.status})),
-    resumo: {
-      totalBriefing: B.filter(x=>isMe(x.owner||ME)).length,
-      abertos: B.filter(x=>isMe(x.owner||ME)&&!x.done).length,
-      urgentes: B.filter(x=>isMe(x.owner||ME)&&x.status==='urgente'&&!x.done).length,
-      concluidos: B.filter(x=>isMe(x.owner||ME)&&x.done).length,
-      alertasCriticos: AL.filter(x=>x.nivel==='v').length,
-      followupsPendentes: D.filter(x=>!x.done).length
-    }
-  };
-  track(payload);
-  showToast('Snapshot enviado ✓');
-}
-
-function resetarPainel(){if(!confirm('Tem certeza? Isso apaga TODO o histórico do '+ME+' neste navegador.'))return;try{['B','D','PA','AL','F','customAreas','customStatus','nid'].forEach(k=>localStorage.removeItem(storKey(k)));}catch(e){}B=[];D=[];PA=[];AL=[];F=[];customAreas=[];customStatus=[];nid=100;ra();showToast('Painel resetado.');}
-</script>
-</body>
-</html>
+  if(pd.saldoAtual!==null){
+    // Alerta de caixa
+    const saldo=pd.saldoAtual,recv=pd.receivablesAbertos||0;
+    const risco=recv>0&&saldo>0?(recv/saldo*100):0;
+    if(risco>80)insights.push({type:'i-red',title:`🔴 Exposição de caixa: ${risco.toFixed(0)}%`,desc:`Recebíveis em aberto representam ${risco.toFixed(0)}% do saldo atual. Threshold crítico: >80%.`});
+    else if(risco>40)insights.push({type:'i-amber',title:`🟡 Exposição de caixa: ${risco.toFixed(0)}%`,desc:`Recebíveis em aberto: R$ ${recv.toLocaleString('pt-BR')}. Monitorar.`});
+  }
+  if(pd.margemMedia!==null){
+    const m=pd.margemMedia;
+    if(m<20)insights.push({type:'i-red',title:`🔴 Margem média crítica: ${m.toFixed(1)}%`,desc:`Threshold saudável para agências: 35–45%. Margem atual abaixo do mínimo operacional.`});
+    else if(m<35)insights.push({type:'i-amber',title:`🟡 Margem média abaixo do ideal: ${m.toFixed(1)}%`,desc:`Meta da Road: >35%. Identificar clientes no vermelho no dashboard Financeiro.`});
+  }
+  if(pd.churnMRR!==null&&pd.newMRR!==null){
+    const churnPct=pd.newMRR+pd.churnMRR>0?pd.churnMRR/(pd.newMRR+pd.churnMRR)*100:0;
+    if(churnPct>10)insights.push({type:'i-red',title:`🔴 Churn MRR crítico: ${churnPct.toFixed(1)}%`,desc:`Threshold crítico: >10%. Verificar clientes em risco de cancelamento.`});
+    else if(churnPct>5)insights.push({type:'i-amber',title:`🟡 Churn MRR em atenção: ${churnPct.toFixed(1)}%`,desc:`Threshold de atenção: >5%. Criar demanda para Miguel revisar pipeline de renovação.`});
+  }
+  if(pd.turnoverMensal!==null){
+    const t=pd.turnoverMensal;
+    if(t>6)insights.push(
