@@ -301,8 +301,11 @@ function iniciar(){
   const s=SEMANAS[0],fim=semanaFim(s);
   document.getElementById('h-week').textContent=`Semana de ${s} — ${fim}`;
   buildNav();
-  // Colapsa semanas passadas por padrão — usuário expande se quiser
-  SEMANAS_PASSADAS.forEach(s=>semanasFechadas.add(s));
+  // Colapsa semanas passadas por padrão — qualquer semana antes da atual
+  const _semAtualVal=s=>{const p=s.split('/');return parseInt(p[1])*100+parseInt(p[0]);};
+  const _semAtual=SEMANAS[0];
+  const _semAtualN=_semAtualVal(_semAtual);
+  B.forEach(x=>{if(x.s&&_semAtualVal(x.s)<_semAtualN)semanasFechadas.add(x.s);});
   ra();
   track({tipo:'sessao'});
   track({tipo:'evento',evento:'abriu_painel',descricao:'Painel aberto'});
@@ -445,13 +448,19 @@ function togSemana(sem){
 function rB(){
   const mb=meusBriefings();
   let h=`<button class="btn-add" onclick="addB()">＋ Adicionar</button>`;
-  // Agrupa por semana usando TODAS as semanas (passadas + atuais + futuras)
-  const gr={};SEMANAS_ALL.forEach(s=>{gr[s]=[];});mb.forEach(x=>{if(gr[x.s])gr[x.s].push(x);else{gr[x.s]=[x];}});
+  // Agrupa por semana — aceita QUALQUER semana que esteja nos dados
+  const gr={};
+  mb.forEach(x=>{if(!gr[x.s])gr[x.s]=[];gr[x.s].push(x);});
 
-  // Ordena: semana atual primeiro, depois futuras (crescente), depois passadas (decrescente)
+  // Converte "DD/MM" para número comparável (dias desde epoch aproximado)
+  const semVal=s=>{const p=s.split('/');return parseInt(p[1])*100+parseInt(p[0]);};
   const semAtual=SEMANAS[0];
-  const futuras=SEMANAS.filter(s=>gr[s]&&gr[s].length);
-  const passadas=SEMANAS_PASSADAS.filter(s=>gr[s]&&gr[s].length);
+  const semAtualVal=semVal(semAtual);
+
+  // Separa futuras/atual (>= atual) de passadas (< atual) e ordena cada grupo
+  const todasSems=Object.keys(gr);
+  const futuras=todasSems.filter(s=>semVal(s)>=semAtualVal).sort((a,b)=>semVal(a)-semVal(b));
+  const passadas=todasSems.filter(s=>semVal(s)<semAtualVal).sort((a,b)=>semVal(b)-semVal(a));
   const semsComItens=[...futuras,...passadas];
 
   semsComItens.forEach((sem,idx)=>{
