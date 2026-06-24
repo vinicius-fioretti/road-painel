@@ -227,12 +227,30 @@ const APPS_URL='https://script.google.com/macros/s/AKfycbw85zgWLSgRmQuD4CKc8oopc
 function track(p){if(!ME)return;try{fetch(APPS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({...p,usuario:ME})});}catch(e){}}
 
 function gerarSemanas(){
-  const s=[],hoje=new Date(),dia=hoje.getDay(),diff=dia===0?-6:1-dia;
-  const d=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate()+diff);
-  for(let i=0;i<26;i++){s.push(`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`);d.setDate(d.getDate()+7);}
+  // Semana atual + 25 futuras para o select (SEMANAS[0] = semana atual)
+  const hoje=new Date(),dia=hoje.getDay(),diff=dia===0?-6:1-dia;
+  const seg=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate()+diff);
+  const s=[];
+  for(let i=0;i<=25;i++){
+    const d=new Date(seg.getFullYear(),seg.getMonth(),seg.getDate()+(i*7));
+    s.push(String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'));
+  }
   return s;
 }
-const SEMANAS=gerarSemanas();
+function gerarSemanasPassadas(){
+  // 12 semanas passadas (mais recente primeiro)
+  const hoje=new Date(),dia=hoje.getDay(),diff=dia===0?-6:1-dia;
+  const seg=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate()+diff);
+  const s=[];
+  for(let i=1;i<=12;i++){
+    const d=new Date(seg.getFullYear(),seg.getMonth(),seg.getDate()-(i*7));
+    s.push(String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'));
+  }
+  return s;
+}
+const SEMANAS=gerarSemanas(); // SEMANAS[0] = semana atual
+const SEMANAS_PASSADAS=gerarSemanasPassadas(); // semanas anteriores, recente primeiro
+const SEMANAS_ALL=[...SEMANAS,...SEMANAS_PASSADAS]; // todas para o briefing
 const AREAS_DEFAULT=["P&C","Liderança","Financeiro","Tech/Ferramentas","Comercial","CEO/Estratégia","Operações","Núcleo A","Núcleo B","Núcleo CBF","CRM","Criação","Performance","Squad 1","Squad 2","Squad 3","Squad 4","Squad 5","A definir"];
 const STATUS_DEFAULT=["urgente","pendente","monitorar","planejado","ok"];
 const PESSOAS_DEFAULT=["Vinicius","André","Sabrina","Miguel","Amanda","Thay","Ju","Eric","Erick","Bruna","Lucas Holanda","Baldner","Jéssica","Darlan","Carla","Iza","Gi","Davila","Leticia","Ian"];
@@ -282,7 +300,10 @@ function iniciar(){
   document.getElementById('h-user').textContent=ME;
   const s=SEMANAS[0],fim=semanaFim(s);
   document.getElementById('h-week').textContent=`Semana de ${s} — ${fim}`;
-  buildNav();ra();
+  buildNav();
+  // Colapsa semanas passadas por padrão — usuário expande se quiser
+  SEMANAS_PASSADAS.forEach(s=>semanasFechadas.add(s));
+  ra();
   track({tipo:'sessao'});
   track({tipo:'evento',evento:'abriu_painel',descricao:'Painel aberto'});
 }
@@ -424,10 +445,14 @@ function togSemana(sem){
 function rB(){
   const mb=meusBriefings();
   let h=`<button class="btn-add" onclick="addB()">＋ Adicionar</button>`;
-  const gr={};SEMANAS.forEach(s=>{gr[s]=[];});mb.forEach(x=>{if(gr[x.s])gr[x.s].push(x);});
+  // Agrupa por semana usando TODAS as semanas (passadas + atuais + futuras)
+  const gr={};SEMANAS_ALL.forEach(s=>{gr[s]=[];});mb.forEach(x=>{if(gr[x.s])gr[x.s].push(x);else{gr[x.s]=[x];}});
 
-  const semsComItens=SEMANAS.filter(s=>gr[s]&&gr[s].length);
+  // Ordena: semana atual primeiro, depois futuras (crescente), depois passadas (decrescente)
   const semAtual=SEMANAS[0];
+  const futuras=SEMANAS.filter(s=>gr[s]&&gr[s].length);
+  const passadas=SEMANAS_PASSADAS.filter(s=>gr[s]&&gr[s].length);
+  const semsComItens=[...futuras,...passadas];
 
   semsComItens.forEach((sem,idx)=>{
     const its=gr[sem];
@@ -450,7 +475,7 @@ function rB(){
 
     its.forEach(item=>{
       if(editing===item.id){
-        h+=`<div class="card"><span class="lbl">Título</span><textarea class="fa" id="bt-${item.id}">${item.title}</textarea><div class="row2"><div><span class="lbl">Semana</span><select class="fi" id="bs-${item.id}">${SEMANAS.map(s=>`<option value="${s}"${s===item.s?' selected':''}>${s}</option>`).join('')}</select></div><div><span class="lbl">Status</span>${comboStatus(item.id+'b',item.status)}</div></div><div><span class="lbl">Área</span>${comboArea(item.id+'b',item.area)}</div><span class="lbl">Nota / contexto</span><textarea class="fa" id="bn-${item.id}">${item.nota||''}</textarea><div class="btn-row"><button class="btn-primary" onclick="saveB('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delB('${item.id}')">🗑 Remover</button></div></div>`;
+        h+=`<div class="card"><span class="lbl">Título</span><textarea class="fa" id="bt-${item.id}">${item.title}</textarea><div class="row2"><div><span class="lbl">Semana</span><select class="fi" id="bs-${item.id}">${[...SEMANAS_PASSADAS,...SEMANAS].map(s=>`<option value="${s}"${s===item.s?' selected':''}>${s}</option>`).join('')}</select></div><div><span class="lbl">Status</span>${comboStatus(item.id+'b',item.status)}</div></div><div><span class="lbl">Área</span>${comboArea(item.id+'b',item.area)}</div><span class="lbl">Nota / contexto</span><textarea class="fa" id="bn-${item.id}">${item.nota||''}</textarea><div class="btn-row"><button class="btn-primary" onclick="saveB('${item.id}')">✓ Salvar</button><button class="btn-sm" onclick="editing=null;ra()">Cancelar</button><button class="btn-del" onclick="delB('${item.id}')">🗑 Remover</button></div></div>`;
       }else{
         h+=`<div class="card" style="${item.done?'opacity:.5':''}"><div class="card-top"><input type="checkbox" class="check" ${item.done?'checked':''} onchange="togB('${item.id}')"><span class="card-title ${item.done?'done-t':''}" onclick="togC('${item.id}')">${item.title}</span><button class="icon-btn" onclick="editing='${item.id}';ra()">✎</button></div><div class="card-meta"><span class="week-tag">${sem}</span><span class="area-tag">${item.area}</span><span class="pill ${pillClass(item.status)}">${statusLabel(item.status)}</span></div>${openC.has(item.id)&&item.nota?`<div class="card-body open"><div style="font-size:13px;color:var(--text-2);line-height:1.6">${item.nota}</div></div>`:''}</div>`;
       }
