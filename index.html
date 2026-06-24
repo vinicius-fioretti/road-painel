@@ -380,7 +380,15 @@ function goTab(t){
 }
 
 function meusBriefings(){return B.filter(x=>isMe(x.owner||ME));}
-function isMe(r){return r&&r.split(/[,\/]/).some(p=>p.trim().toLowerCase().startsWith(ME.toLowerCase()));}
+function isMe(r){
+  if(!r)return false;
+  const mel=ME.toLowerCase();
+  return r.split(/[,\/]/).some(p=>{
+    const pl=p.trim().toLowerCase();
+    // bate nos dois sentidos: "Vinicius" bate com "Vinicius Fioretti" e vice-versa
+    return pl.startsWith(mel)||mel.startsWith(pl);
+  });
+}
 function grupoPorResp(){
   const m={};D.filter(x=>!x.done).forEach(x=>{const nome=x.resp.split(/[,\/]/)[0].trim();if(!m[nome])m[nome]={nome,cor:corP(nome),items:[]};m[nome].items.push(x);});
   return Object.values(m);
@@ -430,12 +438,13 @@ function rB(){
     const temAtrasado=!isAtual&&pendentes>0;
 
     // badges inline
-    const badgePend=pendentes?`<span style="font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;margin-left:7px;background:${temAtrasado?'var(--red-bg)':'var(--amber-bg)'};color:${temAtrasado?'var(--red)':'var(--amber)'};">${pendentes} pend.</span>`:'';
-    const badgeOk=!pendentes&&concluidos?`<span style="font-size:10px;padding:1px 7px;border-radius:99px;margin-left:7px;background:var(--green-bg);color:var(--green);">✓ ${concluidos}</span>`:'';
-    const labelAtual=isAtual?` <span style="font-size:10px;padding:1px 7px;border-radius:99px;background:var(--week-bg);color:var(--week);font-weight:600;margin-left:6px">atual</span>`:'';
-    const chevronStyle=`font-size:13px;color:var(--text-3);margin-left:auto;transition:transform .2s;display:inline-block;transform:${isFechada?'rotate(-90deg)':'rotate(0deg)'}`;
+    const pe='pointer-events:none'; // filhos não capturam o clique
+    const badgePend=pendentes?`<span style="font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;margin-left:7px;${pe};background:${temAtrasado?'var(--red-bg)':'var(--amber-bg)'};color:${temAtrasado?'var(--red)':'var(--amber)'};">${pendentes} pend.</span>`:'';
+    const badgeOk=!pendentes&&concluidos?`<span style="font-size:10px;padding:1px 7px;border-radius:99px;margin-left:7px;${pe};background:var(--green-bg);color:var(--green);">✓ ${concluidos}</span>`:'';
+    const labelAtual=isAtual?` <span style="font-size:10px;padding:1px 7px;border-radius:99px;background:var(--week-bg);color:var(--week);font-weight:600;margin-left:6px;${pe}">atual</span>`:'';
+    const chevronStyle=`font-size:13px;color:var(--text-3);margin-left:auto;transition:transform .2s;display:inline-block;${pe};transform:${isFechada?'rotate(-90deg)':'rotate(0deg)'}`;
 
-    h+=`<div class="sem-hdr${idx===0?' sem-hdr:first-of-type':''}" style="${idx===0?'border-top:none;margin-top:0':''}" onclick="togSemana('${sem}')">📅 Semana de ${sem}${labelAtual}${badgePend}${badgeOk}<span style="${chevronStyle}">▾</span></div>`;
+    h+=`<div class="sem-hdr" style="cursor:pointer;${idx===0?'border-top:none;margin-top:0':''}" onclick="togSemana('${sem}')">📅 Semana de ${sem}${labelAtual}${badgePend}${badgeOk}<span style="${chevronStyle}">▾</span></div>`;
 
     if(isFechada)return;
 
